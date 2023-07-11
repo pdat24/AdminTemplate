@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Roboto:wght@400;500;700;900&display=swap");
+@import "../assets/icons/fontawesome-free-6.4.0-web/css/all.min.css";
+
+* {
+    box-sizing: border-box;
+    font-family: "Inter var", Roboto, Helvetica, Arial, sans-serif;
+}
+
+$purple: rgb(129, 140, 248);
+.text-purple {
+    color: $purple;
+}
+.bg-purple {
+    background-color: $purple;
+}
+body {
+    overflow: hidden;
+}
+.font-s20 {
+    font-size: 20px !important;
+}
