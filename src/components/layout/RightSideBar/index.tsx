@@ -15,7 +15,7 @@ const wrapperCSS = css`
     display: flex;
     top: 0;
     height: 100vh;
-    z-index: 200;
+    z-index: 2000;
     overflow: hidden;
     flex-direction: column;
     width: 360px;

@@ -2,7 +2,8 @@
 import { useRef } from "react";
 import { css } from "@emotion/react";
 import MenuIcon from "@mui/icons-material/Menu";
-import EventNoteIcon from "@mui/icons-material/EventNote";
+import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
+import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
 import { Fab } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
@@ -59,6 +60,25 @@ const linkIconCSS = css`
     width: 22px;
     height: 22px;
 `;
+
+import { children } from "~/types";
+
+function CustomNavLink({ path, children }: { path: string } & children) {
+    return (
+        <NavLink
+            to={path}
+            style={({ isActive }) =>
+                isActive
+                    ? {
+                          backgroundColor: "rgba(255, 255, 255, 0.1)",
+                      }
+                    : {}
+            }
+        >
+            <SideBarLink>{children}</SideBarLink>
+        </NavLink>
+    );
+}
 
 function LeftSideBar() {
     const wrapperDOM = useRef<HTMLDivElement>(null);
@@ -119,21 +139,14 @@ function LeftSideBar() {
                             </div>
                         </div>
                         <div>
-                            <NavLink
-                                to="/"
-                                style={({ isActive }) =>
-                                    isActive
-                                        ? {
-                                              backgroundColor: "rgba(255, 255, 255, 0.1)",
-                                          }
-                                        : {}
-                                }
-                            >
-                                <SideBarLink>
-                                    <EventNoteIcon css={linkIconCSS} />
-                                    <div>Project</div>
-                                </SideBarLink>
-                            </NavLink>
+                            <CustomNavLink path="/">
+                                <AssignmentTurnedInOutlinedIcon css={linkIconCSS} />
+                                <div>Project</div>
+                            </CustomNavLink>
+                            <CustomNavLink path="/finance">
+                                <PaymentsOutlinedIcon css={linkIconCSS} />
+                                <div>Finance</div>
+                            </CustomNavLink>
                         </div>
                     </div>
                 </div>
