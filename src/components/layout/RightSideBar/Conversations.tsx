@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css, Fab, Chip } from "@mui/material";
-import { forwardRef, ForwardedRef, useRef, useState, useEffect, ReactNode } from "react";
+import { forwardRef, ForwardedRef, useRef, useState, useEffect, ReactNode, useCallback } from "react";
 // icons
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import ForumIcon from "@mui/icons-material/Forum";
 import { friend, type chat, bunchChat } from "~/types";
-
+import createId from "~/components/generateID";
 const wrapperCSS = css`
     background-color: rgb(241, 245, 249);
     padding-bottom: 70px;
@@ -67,6 +67,8 @@ function Conversation({ friend }: { friend: friend | null }, ref: ForwardedRef<H
     const chatDefault = useRef(true);
     const msgInp = useRef<HTMLInputElement>(null);
     const sendBtn = useRef<HTMLButtonElement>(null);
+    const id = useCallback(createId(), []);
+
     if (!friend) chatDefault.current = true;
     else if (friend.chat.length === 0) chatDefault.current = true;
     else chatDefault.current = false;
@@ -132,9 +134,9 @@ function Conversation({ friend }: { friend: friend | null }, ref: ForwardedRef<H
                 });
                 result = [...result, ...batch];
             } else if (msg[0]) {
-                const batch = msg[0].map((text) => {
+                const batch = msg[0].map((text, index_) => {
                     return (
-                        <div className="mb-1 pl-4 w-full text-left">
+                        <div className="mb-1 pl-4 w-full text-left" key={id()}>
                             <Chip label={text} css={msgFriendCSS} />
                         </div>
                     );

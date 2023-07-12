@@ -3,21 +3,31 @@
 
 * {
     box-sizing: border-box;
-    font-family: "Inter var", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Inter var", "Roboto", Helvetica, Arial, sans-serif;
 }
 
 $purple: rgb(129, 140, 248);
+$darkPurple: rgb(79, 70, 229);
 .text-purple {
     color: $purple;
 }
 .bg-purple {
     background-color: $purple;
 }
+.text-darkPurple {
+    color: $darkPurple !important;
+}
+.bg-darkPurple {
+    background-color: $darkPurple !important;
+}
 body {
     overflow: hidden;
 }
 .font-s20 {
     font-size: 20px !important;
+}
+.font-s13 {
+    font-size: 13px !important;
 }
 .bg-color {
     background-color: #f1f5f9 !important;

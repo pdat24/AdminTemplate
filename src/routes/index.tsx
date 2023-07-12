@@ -1,4 +1,4 @@
-import { NotFoundPage, ProfilePage, ProjectPage, FinancePage } from "~/pages";
+import { NotFoundPage, ProfilePage, ProjectPage, FinancePage, Academic } from "~/pages";
 import { useParams } from "react-router-dom";
 
 function AppRouter() {
@@ -13,6 +13,9 @@ function AppRouter() {
             break;
         case "finance":
             Page = FinancePage;
+            break;
+        case "academic":
+            Page = Academic;
             break;
         default:
             Page = NotFoundPage;

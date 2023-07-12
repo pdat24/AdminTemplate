@@ -4,6 +4,7 @@ import { css } from "@emotion/react";
 import MenuIcon from "@mui/icons-material/Menu";
 import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Fab } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
@@ -146,6 +147,10 @@ function LeftSideBar() {
                             <CustomNavLink path="/finance">
                                 <PaymentsOutlinedIcon css={linkIconCSS} />
                                 <div>Finance</div>
+                            </CustomNavLink>
+                            <CustomNavLink path="/academic">
+                                <SchoolOutlinedIcon css={linkIconCSS} />
+                                <div>Academic</div>
                             </CustomNavLink>
                         </div>
                     </div>
