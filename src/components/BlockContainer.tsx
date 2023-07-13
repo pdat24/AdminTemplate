@@ -16,7 +16,7 @@ function BlockContainer({
         overflow: hidden;
     `;
     return (
-        <div css={wrapperCSS} className={className} style={style}>
+        <div css={wrapperCSS} className={"bg-white " + className} style={style}>
             {children}
         </div>
     );

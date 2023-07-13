@@ -110,7 +110,7 @@ function LeftSideBar() {
         }
     };
     return (
-        <div ref={wrapperDOM} css={wrapperCSS} className="text-white relative">
+        <div ref={wrapperDOM} css={wrapperCSS} className="text-white relative shrink-0">
             <div css={headerCSS} className="flex items-center px-5 ">
                 <div className="grow mx-1 flex text-xs items-center">
                     <img src={favicon} alt="photo" css={faviconCSS} />

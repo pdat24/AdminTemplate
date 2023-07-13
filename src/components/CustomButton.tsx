@@ -13,10 +13,11 @@ interface props extends children {
 function CustomBtn({ children, css_, className, style }: props) {
     const btnCSS = css`
         ${resetFab}
-        ${css_}
         width: auto;
         height: auto;
         padding: 10px 12px;
+        text-transform: capitalize;
+        ${css_}
     `;
     return (
         <Fab variant="extended" css={btnCSS} className={className} style={style}>

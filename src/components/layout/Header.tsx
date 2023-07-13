@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Badge, Fab, Tooltip, Avatar, Menu, MenuItem } from "@mui/material";
 import { children } from "~/types";
+import { Link } from "react-router-dom";
 // icon
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
@@ -151,19 +152,19 @@ function Profile() {
                     "aria-labelledby": "basic-button",
                 }}
             >
-                <MenuItem css={itemCSS}>
-                    <div className="flex gap-3">
+                <MenuItem onClick={handleClose} css={itemCSS}>
+                    <Link to="/profile" className="flex gap-3">
                         <AccountCircleOutlinedIcon />
                         <div>My Profile</div>
-                    </div>
+                    </Link>
                 </MenuItem>
-                <MenuItem css={itemCSS}>
+                <MenuItem onClick={handleClose} css={itemCSS}>
                     <div className="flex gap-3">
                         <DraftsOutlinedIcon />
                         <div>Inbox</div>
                     </div>
                 </MenuItem>
-                <MenuItem css={itemCSS}>
+                <MenuItem onClick={handleClose} css={itemCSS}>
                     <div className="flex gap-3">
                         <LogoutIcon />
                         <div>Sign out</div>

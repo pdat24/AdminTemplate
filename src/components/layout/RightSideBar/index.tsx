@@ -100,6 +100,7 @@ function RightSideBar() {
                 </div>
             </div>
             <div
+                className="shrink-0"
                 style={{
                     width: "70px",
                     height: "100vh",

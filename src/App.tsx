@@ -27,7 +27,7 @@ function App() {
         <DefaultLayout>
             <div css={wrapperCSS}>
                 <Routes>
-                    <Route path="/" element={<Navigate to={"/project"} />} />
+                    <Route path="/" element={<Navigate to={"/analytics"} />} />
                     <Route path="/:id" element={<AppRouter />} />
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
