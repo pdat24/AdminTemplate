@@ -3,7 +3,7 @@
 
 * {
     box-sizing: border-box;
-    font-family: "Inter var", "Roboto", Helvetica, Arial, sans-serif;
+    font-family: Inter, "Roboto", Helvetica, Arial, sans-serif;
 }
 
 $purple: rgb(129, 140, 248);
@@ -29,6 +29,12 @@ body {
 .font-s13 {
     font-size: 13px !important;
 }
+.font-s16 {
+    font-size: 16px !important;
+}
 .bg-color {
     background-color: #f1f5f9 !important;
+}
+.no-drag {
+    -webkit-user-drag: none;
 }

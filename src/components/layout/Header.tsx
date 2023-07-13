@@ -130,7 +130,7 @@ function Profile() {
                 className="flex items-end"
             >
                 <div className="capitalize mr-2 text-right">
-                    <div className="text-sm">Phạm Quốc Đạt</div>
+                    <div className="text-sm font-bold">Phạm Quốc Đạt</div>
                     <div
                         className="text-xs"
                         css={css`

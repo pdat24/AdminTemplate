@@ -4,6 +4,8 @@ import { css } from "@emotion/react";
 import MenuIcon from "@mui/icons-material/Menu";
 import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
 import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
+import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import BubbleChartOutlinedIcon from "@mui/icons-material/BubbleChartOutlined";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Fab } from "@mui/material";
 import { NavLink } from "react-router-dom";
@@ -81,6 +83,20 @@ function CustomNavLink({ path, children }: { path: string } & children) {
     );
 }
 
+function LinksGroup({ label, desc }: { label: string; desc: string }) {
+    const color = css`
+        color: rgb(156, 163, 175);
+    `;
+    return (
+        <div className="px-4 py-2.5 mt-7">
+            <h3 className="text-purple font-medium text-sm uppercase">{label}</h3>
+            <div className="font-medium text-xs" css={color}>
+                {desc}
+            </div>
+        </div>
+    );
+}
+
 function LeftSideBar() {
     const wrapperDOM = useRef<HTMLDivElement>(null);
     const handleHide = () => {
@@ -128,17 +144,7 @@ function LeftSideBar() {
                         </div>
                     </div>
                     <div className="px-3">
-                        <div className="px-4 py-2.5 mt-7">
-                            <h3 className="text-purple font-medium text-sm uppercase">Applications</h3>
-                            <div
-                                className="font-medium text-xs"
-                                css={css`
-                                    color: rgb(156, 163, 175);
-                                `}
-                            >
-                                Custom made application designs
-                            </div>
-                        </div>
+                        <LinksGroup label="DASHBOARDS" desc="Unique dashboard designs" />
                         <div>
                             <CustomNavLink path="/">
                                 <AssignmentTurnedInOutlinedIcon css={linkIconCSS} />
@@ -148,9 +154,18 @@ function LeftSideBar() {
                                 <PaymentsOutlinedIcon css={linkIconCSS} />
                                 <div>Finance</div>
                             </CustomNavLink>
+                            <CustomNavLink path="/analytics">
+                                <BubbleChartOutlinedIcon css={linkIconCSS} />
+                                <div>Analytics</div>
+                            </CustomNavLink>
+                            <CustomNavLink path="/crypto">
+                                <MonetizationOnOutlinedIcon css={linkIconCSS} />
+                                <div>Crypto</div>
+                            </CustomNavLink>
+                            <LinksGroup label="APPLICATIONS" desc="Custom made application designs" />
                             <CustomNavLink path="/academic">
                                 <SchoolOutlinedIcon css={linkIconCSS} />
-                                <div>Academic</div>
+                                <div>Academy</div>
                             </CustomNavLink>
                         </div>
                     </div>
