@@ -1,5 +1,5 @@
 import { type children } from "~/types";
-import LeftSideBar from "./LeftSidebar";
+import LeftSideBar from "./LeftSideBar";
 import Header from "./Header";
 import RightSideBar from "./RightSideBar";
 

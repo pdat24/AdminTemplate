@@ -5,3 +5,4 @@ export { default as FinancePage } from "./finance";
 export { default as Academic } from "./academic";
 export { default as Analytics } from "./analytics";
 export { default as Crypto } from "./crypto";
+export { default as Contacts } from "./contacts";

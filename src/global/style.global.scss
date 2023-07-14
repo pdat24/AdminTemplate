@@ -5,6 +5,13 @@
     box-sizing: border-box;
     font-family: "Roboto", "Inter", Helvetica, Arial, sans-serif;
 }
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 4px;
+}
 
 $purple: rgb(129, 140, 248);
 $darkPurple: rgb(79, 70, 229);
@@ -22,6 +29,9 @@ $darkPurple: rgb(79, 70, 229);
 }
 body {
     overflow: hidden;
+}
+.font-s32 {
+    font-size: 32px !important;
 }
 .font-s20 {
     font-size: 20px !important;

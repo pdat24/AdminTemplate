@@ -2,18 +2,14 @@
 import { useRef } from "react";
 import { css } from "@emotion/react";
 import MenuIcon from "@mui/icons-material/Menu";
-import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
-import PaymentsOutlinedIcon from "@mui/icons-material/PaymentsOutlined";
-import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
-import BubbleChartOutlinedIcon from "@mui/icons-material/BubbleChartOutlined";
-import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import { Fab } from "@mui/material";
 import { NavLink } from "react-router-dom";
 
 import favicon from "~/assets/imgs/favicon.svg";
 import reactIcon from "~/assets/imgs/react.svg";
 import avatar from "~/assets/imgs/avatar.jpg";
-import SideBarLink from "../SideBarLink";
+import SideBarLink from "../../SideBarLink";
+import Links from "./links";
 
 const reactLabel = css`
     background-color: rgb(18, 18, 18);
@@ -109,6 +105,17 @@ function LeftSideBar() {
             );
         }
     };
+    const renderLinks = (group: number) => {
+        return Links.map(
+            (Link, index) =>
+                Link.group === group && (
+                    <CustomNavLink key={index} path={`${Link.path}`}>
+                        <Link.icon css={linkIconCSS} />
+                        <div>{Link.text}</div>
+                    </CustomNavLink>
+                )
+        );
+    };
     return (
         <div ref={wrapperDOM} css={wrapperCSS} className="text-white relative shrink-0">
             <div css={headerCSS} className="flex items-center px-5 ">
@@ -125,7 +132,12 @@ function LeftSideBar() {
                     </Fab>
                 </div>
             </div>
-            <div className="overflow-y-auto">
+            <div
+                className="overflow-y-auto"
+                css={css`
+                    height: calc(100vh - 72px);
+                `}
+            >
                 <div>
                     <div className="p-4 pb-3.5">
                         <div className="flex flex-col items-center">
@@ -145,30 +157,13 @@ function LeftSideBar() {
                     </div>
                     <div className="px-3">
                         <LinksGroup label="DASHBOARDS" desc="Unique dashboard designs" />
-                        <div>
-                            <CustomNavLink path="/">
-                                <AssignmentTurnedInOutlinedIcon css={linkIconCSS} />
-                                <div>Project</div>
-                            </CustomNavLink>
-                            <CustomNavLink path="/finance">
-                                <PaymentsOutlinedIcon css={linkIconCSS} />
-                                <div>Finance</div>
-                            </CustomNavLink>
-                            <CustomNavLink path="/analytics">
-                                <BubbleChartOutlinedIcon css={linkIconCSS} />
-                                <div>Analytics</div>
-                            </CustomNavLink>
-                            <CustomNavLink path="/crypto">
-                                <MonetizationOnOutlinedIcon css={linkIconCSS} />
-                                <div>Crypto</div>
-                            </CustomNavLink>
-                            <LinksGroup label="APPLICATIONS" desc="Custom made application designs" />
-                            <CustomNavLink path="/academic">
-                                <SchoolOutlinedIcon css={linkIconCSS} />
-                                <div>Academy</div>
-                            </CustomNavLink>
-                        </div>
+                        {renderLinks(1)}
+                        <LinksGroup label="APPLICATIONS" desc="Custom made application designs" />
+                        {renderLinks(2)}
                     </div>
+                </div>
+                <div className="py-12 flex justify-center">
+                    <img src={favicon} alt="favicon" className="w-14 opacity-30" />
                 </div>
             </div>
         </div>
