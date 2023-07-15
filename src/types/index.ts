@@ -8,7 +8,7 @@ type bunchChat = { 0?: string[]; 1?: string[] };
 type chat = Array<{ 0?: string[] } | { 1?: string[] }>;
 
 interface friend {
-    id: string;
+    id: string | number;
     avatar: string;
     state: "on" | "off" | "pending";
     chat: chat;

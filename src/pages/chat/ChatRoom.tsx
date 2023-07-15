@@ -10,6 +10,7 @@ import AvatarState from "~/components/AvatarState";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import { Fab } from "@mui/material";
 import { resetFab } from "~/components/CSS";
+import SendingTime from "~/components/SendingTime";
 import {
     useEffect,
     useState,
@@ -38,11 +39,6 @@ const morvertBtn = css`
 function Messages({ data }: { data: chat }) {
     const id = useCallback(createId(), []);
     const wrapperDOM = useRef<HTMLDivElement>(null);
-    const SendingTime = ({ side }: { side: "left" | "right" }) => (
-        <p key={id()} className={`text-${side} text-xs opacity-50 mb-5 mx-3.5`}>
-            over 1 seconds ago
-        </p>
-    );
     const handler = () => {
         setTimeout(() => {
             wrapperDOM.current!.scrollTo(0, wrapperDOM.current!.scrollHeight);
@@ -158,7 +154,7 @@ function ChatRoom() {
         <div className="bg-color h-full grow">
             {data ? (
                 <div className="flex h-full overflow-hidden ">
-                    <div className="relative flex flex-col h-full overflow-hidden pb-8 shrink">
+                    <div className="relative flex flex-col h-full w-full overflow-hidden pb-8 shrink">
                         <div className="h-16 w-full bg-milk border border-solid flex items-center shrink-0">
                             <div className="flex items-center justify-between px-4 w-full">
                                 <div

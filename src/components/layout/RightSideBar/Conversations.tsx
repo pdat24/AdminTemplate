@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { css, Fab, Chip } from "@mui/material";
-import { forwardRef, ForwardedRef, useRef, useState, useEffect, ReactNode, useCallback } from "react";
+import { css, Fab } from "@mui/material";
+import { forwardRef, ForwardedRef, useRef, useState, useEffect, useCallback, ReactElement } from "react";
+import SendingTime from "~/components/SendingTime";
+import SingleMsg from "~/components/ChatMessage";
 // icons
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
@@ -31,23 +33,6 @@ const sendBtnCSS = css`
     background-color: transparent;
     box-shadow: none !important;
 `;
-const msgMeCSS = css`
-    background-color: rgb(100, 116, 139);
-    color: #fff;
-    padding: 10px 8px;
-    height: auto;
-    font-size: 14px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-`;
-const msgFriendCSS = css`
-    ${msgMeCSS}
-    background-color: rgb(129, 140, 248);
-    border-radius: 20px;
-`;
-
 const chatWrapperCSS = css`
     ::-webkit-scrollbar {
         width: 6px;
@@ -62,16 +47,30 @@ const chatWrapperCSS = css`
 `;
 
 function Conversation({ friend }: { friend: friend | null }, ref: ForwardedRef<HTMLDivElement>) {
-    const [msgs, setMsgs] = useState<chat>(friend ? friend.chat : []);
+    const [, setMsgs] = useState<chat>(friend ? friend.chat : []);
     const chatWrapper = useRef<HTMLDivElement>(null);
     const chatDefault = useRef(true);
     const msgInp = useRef<HTMLInputElement>(null);
     const sendBtn = useRef<HTMLButtonElement>(null);
     const id = useCallback(createId(), []);
+    const created = useRef(false);
 
     if (!friend) chatDefault.current = true;
     else if (friend.chat.length === 0) chatDefault.current = true;
     else chatDefault.current = false;
+    const handler = () => {
+        setTimeout(() => {
+            if (chatWrapper.current) chatWrapper.current.scrollTo(0, chatWrapper.current.scrollHeight);
+        }, 225);
+    };
+    useEffect(() => {
+        handler();
+        window.addEventListener("addrecentcontact", handler);
+        window.addEventListener("startchat", () => {
+            created.current = false;
+            handler();
+        });
+    }, []);
     useEffect(() => {
         if (sendBtn.current) {
             // send message
@@ -79,24 +78,19 @@ function Conversation({ friend }: { friend: friend | null }, ref: ForwardedRef<H
                 if (msgInp.current!.value) {
                     chatDefault.current = false;
                     // dispatch e to change recently contact friends list in sidebar
-                    if (friend?.chat.length === 0)
+                    if (msgInp.current!.value.replace(/\s/g, "").length) {
+                        if (!created.current) {
+                            friend?.chat.push({ 1: [msgInp.current!.value] });
+                            created.current = true;
+                        } else friend?.chat!.at(-1)[1].push(msgInp.current!.value);
                         window.dispatchEvent(
                             new CustomEvent("addrecentcontact", {
                                 detail: friend,
                             })
                         );
-                    // update chatroom
-                    friend?.chat.push({ 1: [msgInp.current!.value] });
-                    // response message
-                    setTimeout(() => {
-                        friend?.chat.push({
-                            0: ["Your message is sent successfully.", "Thanks for seeing my project❤️!"],
-                        });
                         setMsgs([...friend!.chat]);
-                    }, 3000);
-                    setMsgs([...friend!.chat]);
-                    // reset msg in input field
-                    msgInp.current!.value = "";
+                        msgInp.current!.value = "";
+                    }
                 }
             };
             // mount event
@@ -106,47 +100,35 @@ function Conversation({ friend }: { friend: friend | null }, ref: ForwardedRef<H
             };
         }
     }, [friend]);
-    // handle change message corner's border radius
-    const handleStartEnd = (index: number) => {
-        if (index === 0 && msgs.length > 1) {
-            return {
-                borderTopRightRadius: "20px",
-                borderBottomRightRadius: "4px",
-            };
-        } else if (index === msgs.length - 1 && msgs.length > 1)
-            return {
-                borderBottomRightRadius: "20px",
-                borderTopRightRadius: "4px",
-                // marginBottom: "20px",
-            };
-    };
-    // handle render messages in chatroom
-    const handleRenderMsgs = (data: chat) => {
-        let result: ReactNode[] = [];
-        data.forEach((msg: bunchChat, index) => {
-            if (msg[1]) {
-                const batch = msg[1].map((text) => {
-                    return (
-                        <div className="mb-1 pr-4 w-full text-right" key={index}>
-                            <Chip label={text} css={msgMeCSS} style={(() => handleStartEnd(index))()} />
-                        </div>
+    const renderMsgs = (data: chat) =>
+        !!data.length &&
+        data.map((elems: bunchChat) => {
+            const result: ReactElement[] = [];
+            if (elems[0]) {
+                elems[0].forEach((elem, index) => {
+                    result.push(
+                        <SingleMsg key={id()} type="you">
+                            {elem}
+                        </SingleMsg>
                     );
+                    if (index === elems[0]!.length - 1) {
+                        result.push(<SendingTime side="left" />);
+                    }
                 });
-                result = [...result, ...batch];
-            } else if (msg[0]) {
-                const batch = msg[0].map((text) => {
-                    return (
-                        <div className="mb-1 pl-4 w-full text-left" key={id()}>
-                            <Chip label={text} css={msgFriendCSS} />
-                        </div>
+            } else if (elems[1]) {
+                elems[1].forEach((elem, index) => {
+                    result.push(
+                        <SingleMsg key={id()} type="i">
+                            {elem}
+                        </SingleMsg>
                     );
+                    if (index === elems[1]!.length - 1) {
+                        result.push(<SendingTime side="right" />);
+                    }
                 });
-                result = [...result, ...batch];
             }
+            return <div key={id()}>{...result}</div>;
         });
-        return result;
-    };
-    // return
     return (
         <>
             {friend ? (
@@ -161,7 +143,7 @@ function Conversation({ friend }: { friend: friend | null }, ref: ForwardedRef<H
                                     </div>
                                 </div>
                             ) : (
-                                <div className="flex flex-col items-end">{handleRenderMsgs(friend.chat)}</div>
+                                <div className="px-2">{renderMsgs(friend.chat)}</div>
                             )}
                         </div>
                     </div>
