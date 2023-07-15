@@ -5,11 +5,10 @@ import { css } from "@emotion/react";
 interface prop {
     src?: string;
     alt: string;
-    sizes: string;
-    state: string;
+    state: "on" | "off" | "pending";
 }
 
-function AvatarState({ state, src, alt, sizes, ...args }: prop) {
+function AvatarState({ state, src, alt, ...args }: prop) {
     let indicatirColor;
     if (state === "on") indicatirColor = "rgb(76, 175, 80)";
     if (state === "off") indicatirColor = "rgb(100, 100, 100)";
@@ -22,8 +21,8 @@ function AvatarState({ state, src, alt, sizes, ...args }: prop) {
         background-color: ${indicatirColor};
     `;
     return (
-        <div className="relative">
-            <Avatar {...args} alt={alt || "avatar"} src={src} sizes={sizes} />
+        <div className="relative rounded-full">
+            <Avatar {...args} alt={alt || "avatar"} src={src} />
             <div className="absolute right-0 -bottom-0.5" css={indicator}></div>
         </div>
     );

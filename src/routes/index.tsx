@@ -1,4 +1,14 @@
-import { NotFoundPage, ProfilePage, ProjectPage, Contacts, FinancePage, Academic, Analytics, Crypto } from "~/pages";
+import {
+    Chat,
+    NotFoundPage,
+    ProfilePage,
+    ProjectPage,
+    Contacts,
+    FinancePage,
+    Academic,
+    Analytics,
+    Crypto,
+} from "~/pages";
 import { useParams } from "react-router-dom";
 
 function AppRouter() {
@@ -25,6 +35,9 @@ function AppRouter() {
             break;
         case "contacts":
             Page = Contacts;
+            break;
+        case "chat":
+            Page = Chat;
             break;
         default:
             Page = NotFoundPage;

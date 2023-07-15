@@ -10,7 +10,7 @@ function DefaultLayout({ children }: children) {
                 <LeftSideBar />
                 <div className="grow">
                     <Header />
-                    {children}
+                    <div className="relative z-10">{children}</div>
                 </div>
             </div>
             <RightSideBar />

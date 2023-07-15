@@ -4,6 +4,7 @@
 * {
     box-sizing: border-box;
     font-family: "Roboto", "Inter", Helvetica, Arial, sans-serif;
+    scroll-behavior: smooth;
 }
 ::-webkit-scrollbar {
     width: 4px;
@@ -12,14 +13,17 @@
     background-color: #aaa;
     border-radius: 4px;
 }
-
+.bg-milk {
+    background-color: #f6f9fb !important;
+}
 $purple: rgb(129, 140, 248);
 $darkPurple: rgb(79, 70, 229);
+$bgColor: #f1f5f9;
 .text-purple {
-    color: $purple;
+    color: $purple !important;
 }
 .bg-purple {
-    background-color: $purple;
+    background-color: $purple !important;
 }
 .text-darkPurple {
     color: $darkPurple !important;
@@ -43,7 +47,7 @@ body {
     font-size: 16px !important;
 }
 .bg-color {
-    background-color: #f1f5f9 !important;
+    background-color: $bgColor !important;
 }
 .h-72 {
     height: 72px !important;

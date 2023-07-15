@@ -5,6 +5,7 @@ import BubbleChartOutlinedIcon from "@mui/icons-material/BubbleChartOutlined";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import Groups2OutlinedIcon from "@mui/icons-material/Groups2Outlined";
+import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 
 export default [
     { text: "Project", path: "/project", icon: AssignmentTurnedInOutlinedIcon, group: 1 },
@@ -13,5 +14,6 @@ export default [
     { text: "Crypto", path: "/crypto", icon: MonetizationOnOutlinedIcon, group: 1 },
     { text: "Academic", path: "/academic", icon: SchoolOutlinedIcon, group: 2 },
     { text: "Contacts", path: "/contacts", icon: Groups2OutlinedIcon, group: 2 },
+    { text: "Chat", path: "/chat", icon: TextsmsOutlinedIcon, group: 2 },
     { text: "Profile", path: "/profile", icon: AccountCircleOutlinedIcon, group: 2 },
 ];

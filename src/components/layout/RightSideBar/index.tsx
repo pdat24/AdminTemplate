@@ -24,7 +24,6 @@ const wrapperCSS = css`
     transition: margin 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     margin-right: -290px;
 `;
-// animation: 1ms linear 0s 300 normal forwards running hide-panel;
 
 const bodyCSS = css``;
 const headerCSS = css`

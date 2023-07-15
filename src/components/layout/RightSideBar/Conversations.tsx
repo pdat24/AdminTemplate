@@ -134,7 +134,7 @@ function Conversation({ friend }: { friend: friend | null }, ref: ForwardedRef<H
                 });
                 result = [...result, ...batch];
             } else if (msg[0]) {
-                const batch = msg[0].map((text, index_) => {
+                const batch = msg[0].map((text) => {
                     return (
                         <div className="mb-1 pl-4 w-full text-left" key={id()}>
                             <Chip label={text} css={msgFriendCSS} />

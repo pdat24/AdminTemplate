@@ -1,20 +1,15 @@
 /**@jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { useEffect, useRef, useState } from "react";
+import InteractingBtns from "./InteractingBtns";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Badge, Fab, Tooltip, Avatar, Menu, MenuItem } from "@mui/material";
-import { children } from "~/types";
+import { Fab, Tooltip, Avatar, Menu, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
 // icon
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import GroupsIcon from "@mui/icons-material/Groups";
 import StarIcon from "@mui/icons-material/Star";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import SearchIcon from "@mui/icons-material/Search";
-import TurnedInNotIcon from "@mui/icons-material/TurnedInNot";
-import FormatSizeIcon from "@mui/icons-material/FormatSize";
-import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import DraftsOutlinedIcon from "@mui/icons-material/DraftsOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -23,32 +18,20 @@ import avatarImg from "~/assets/imgs/avatar.jpg";
 import USAFlag from "~/assets/imgs/USAFlag.svg";
 import TNKFlag from "~/assets/imgs/TNKFlag.svg";
 import VNFlag from "~/assets/imgs/VNFlag.svg";
-import { resetFab } from "../CSS";
+import { resetFab } from "../../CSS";
+import { Icon, iconCSS } from "./InteractingBtns/components";
 
 const langPickerCSS = css`
     height: auto;
     padding: 0;
     ${resetFab}
 `;
-
-function Icon({ children }: children) {
-    const wrapperStyle = css`
-        width: 40px;
-        height: 40px;
-        ${resetFab}
-    `;
-    return <Fab css={wrapperStyle}>{children}</Fab>;
-}
-
 const wrapperCSS = css`
     min-height: 64px;
     box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
         rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     position: relative;
     z-index: 100;
-`;
-const iconCSS = css`
-    color: rgba(0, 0, 0, 0.54);
 `;
 const itemCSS = css`
     font-size: 14px;
@@ -116,6 +99,9 @@ function LanguagePicker() {
 }
 
 function Profile() {
+    const adminColor = css`
+        color: rgb(107, 114, 128);
+    `;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLDivElement>) => setAnchorEl(event.currentTarget);
@@ -132,12 +118,7 @@ function Profile() {
             >
                 <div className="capitalize mr-2 text-right">
                     <div className="text-sm font-bold">Phạm Quốc Đạt</div>
-                    <div
-                        className="text-xs"
-                        css={css`
-                            color: rgb(107, 114, 128);
-                        `}
-                    >
+                    <div className="text-xs" css={adminColor}>
                         Admin
                     </div>
                 </div>
@@ -178,6 +159,9 @@ function Profile() {
 function Header() {
     const openLeftSB = useRef<HTMLDivElement>(null);
     const leftSideBar = useRef<HTMLDivElement>();
+    const starColor = css`
+        color: rgb(255, 179, 0);
+    `;
     useEffect(() => {
         // show menu icon on header
         const handlerShowMenuIcon = (e: CustomEventInit<HTMLDivElement>) => {
@@ -199,78 +183,45 @@ function Header() {
         };
     }, []);
     return (
-        <div css={wrapperCSS} className="w-full flex items-center justify-between">
+        <div css={wrapperCSS} className="w-full flex items-center justify-between relative">
             <div className="px-4">
-                <div
-                    ref={openLeftSB}
-                    css={css`
-                        display: none;
-                    `}
-                >
+                <div ref={openLeftSB} className="hidden">
                     <Icon>
                         <MenuIcon />
                     </Icon>
                 </div>
                 <Tooltip title="Calendar" placement="bottom" arrow>
-                    <div className="inline-block">
+                    <Link to="/calendar" className="inline-block">
                         <Icon>
                             <CalendarMonthIcon css={iconCSS} />
                         </Icon>
-                    </div>
+                    </Link>
                 </Tooltip>
                 <Tooltip title="Contacts" placement="bottom" arrow>
-                    <div className="inline-block">
+                    <Link to="/contacts" className="inline-block">
                         <Icon>
                             <GroupsIcon css={iconCSS} />
                         </Icon>
-                    </div>
+                    </Link>
                 </Tooltip>
                 <Tooltip title="Mail" placement="bottom" arrow>
-                    <div className="inline-block">
+                    <Link to="/mail" className="inline-block">
                         <Icon>
                             <MailOutlineIcon css={iconCSS} />
                         </Icon>
-                    </div>
+                    </Link>
                 </Tooltip>
                 <Tooltip title="Click to add/remove shortcut" placement="bottom" arrow>
                     <div className="inline-block">
                         <Icon>
-                            <StarIcon
-                                css={css`
-                                    color: rgb(255, 179, 0);
-                                `}
-                            />
+                            <StarIcon css={starColor} />
                         </Icon>
                     </div>
                 </Tooltip>
             </div>
             <div className="px-2">
                 <LanguagePicker />
-                <Icon>
-                    <FormatSizeIcon css={iconCSS} />
-                </Icon>
-                <Tooltip title="Fullscreen Toggle" placement="bottom" arrow>
-                    <div className="inline-block">
-                        <Icon>
-                            <FullscreenIcon css={iconCSS} />
-                        </Icon>
-                    </div>
-                </Tooltip>
-                <Tooltip title="Click to search" placement="bottom" arrow>
-                    <div className="inline-block">
-                        <Icon>
-                            <SearchIcon css={iconCSS} />
-                        </Icon>
-                    </div>
-                </Tooltip>
-                <Icon>
-                    <TurnedInNotIcon css={iconCSS} />
-                </Icon>
-                <Icon>
-                    <Badge color="primary" variant="dot">
-                        <NotificationsNoneOutlinedIcon css={iconCSS} />
-                    </Badge>
-                </Icon>
+                <InteractingBtns />
                 <Profile />
             </div>
         </div>

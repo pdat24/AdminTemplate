@@ -21,7 +21,7 @@ import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlin
 import ApartmentOutlinedIcon from "@mui/icons-material/ApartmentOutlined";
 import MailOutlineOutlinedIcon from "@mui/icons-material/MailOutlineOutlined";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
-import contacts from "./contacts.json";
+import contacts from "../../components/friends.json";
 
 const searchBarCSS = css`
     min-width: 44px;

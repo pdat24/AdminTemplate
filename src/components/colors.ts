@@ -14,7 +14,10 @@ const colorSuccess = css`
 const colorDanger = css`
     color: ${colors.danger};
 `;
+const colorWarn = css`
+    color: ${colors.warning};
+`;
 
-export { colorSuccess, colorDanger };
+export { colorSuccess, colorDanger, colorWarn };
 
 export default colors;
