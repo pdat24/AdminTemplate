@@ -8,6 +8,8 @@ import {
     Academic,
     Analytics,
     Crypto,
+    Mail,
+    Notes,
 } from "~/pages";
 import { useParams } from "react-router-dom";
 
@@ -38,6 +40,12 @@ function AppRouter() {
             break;
         case "chat":
             Page = Chat;
+            break;
+        case "mail":
+            Page = Mail;
+            break;
+        case "notes":
+            Page = Notes;
             break;
         default:
             Page = NotFoundPage;

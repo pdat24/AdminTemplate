@@ -7,3 +7,5 @@ export { default as Analytics } from "./analytics";
 export { default as Crypto } from "./crypto";
 export { default as Contacts } from "./contacts";
 export { default as Chat } from "./chat";
+export { default as Mail } from "./mail";
+export { default as Notes } from "./notes";

@@ -24,12 +24,24 @@ $bgColor: #f1f5f9;
 }
 .bg-purple {
     background-color: $purple !important;
+    &:active {
+        background-color: $purple !important;
+    }
+}
+.w400 {
+    width: 400px;
+}
+.h64 {
+    height: 64px;
 }
 .text-darkPurple {
     color: $darkPurple !important;
 }
 .bg-darkPurple {
     background-color: $darkPurple !important;
+    &:active {
+        background-color: $darkPurple !important;
+    }
 }
 body {
     overflow: hidden;

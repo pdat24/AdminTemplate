@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { css } from "@emotion/react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Fab } from "@mui/material";
@@ -64,16 +64,7 @@ import { children } from "~/types";
 
 function CustomNavLink({ path, children }: { path: string } & children) {
     return (
-        <NavLink
-            to={path}
-            style={({ isActive }) =>
-                isActive
-                    ? {
-                          backgroundColor: "rgba(255, 255, 255, 0.1)",
-                      }
-                    : {}
-            }
-        >
+        <NavLink to={path}>
             <SideBarLink>{children}</SideBarLink>
         </NavLink>
     );
@@ -95,6 +86,7 @@ function LinksGroup({ label, desc }: { label: string; desc: string }) {
 
 function LeftSideBar() {
     const wrapperDOM = useRef<HTMLDivElement>(null);
+    const [active, setActive] = useState("analytics");
     const handleHide = () => {
         if (wrapperDOM.current) {
             wrapperDOM.current.style.marginLeft = `${-parseFloat(window.getComputedStyle(wrapperDOM.current).width)}px`;
@@ -109,10 +101,19 @@ function LeftSideBar() {
         return Links.map(
             (Link, index) =>
                 Link.group === group && (
-                    <CustomNavLink key={index} path={`${Link.path}`}>
-                        <Link.icon css={linkIconCSS} />
-                        <div>{Link.text}</div>
-                    </CustomNavLink>
+                    <div
+                        className="rounded"
+                        onClick={() => setActive(Link.path)}
+                        key={index}
+                        css={css`
+                            ${active === Link.path ? "background-color: rgba(255, 255, 255, 0.1)" : ""}
+                        `}
+                    >
+                        <CustomNavLink path={`${Link.path}`}>
+                            <Link.icon css={linkIconCSS} />
+                            <div>{Link.text}</div>
+                        </CustomNavLink>
+                    </div>
                 )
         );
     };

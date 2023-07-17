@@ -149,7 +149,7 @@ function Body() {
     const [hiddenCompleted, setHiddenCompleted] = useState(false);
     const handleChangeType = (e: SelectChangeEvent) => setCategory(+e.target.value);
     const handleSwitch = () => setHiddenCompleted(!hiddenCompleted);
-    const handleSearch = (e: ChangeEvent) => setSearchBarText(e.target.value);
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => setSearchBarText(e.target.value);
     const items = [
         { value: 1, text: "All" },
         { value: 2, text: "Web" },

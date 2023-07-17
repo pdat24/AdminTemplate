@@ -115,7 +115,7 @@ interface FriendChatRoomProp {
     unread?: boolean;
     text?: string;
     onClick?: () => void;
-    id: string;
+    id: string | number;
 }
 function FriendChatRoom({ id, avatar, state, name, unread, text, onClick }: FriendChatRoomProp) {
     const shortMsgCSS = css`
@@ -170,6 +170,7 @@ function Chat() {
     const others = useRef(generateFriends(30, "_"));
     const recently_ = useRef<friend[]>(recently.current);
     const others_ = useRef<friend[]>(others.current);
+    const [active, setActive] = useState<string | number>("");
     useEffect(() => {
         const handler = (e: CustomEventInit<friend>) => {
             if (
@@ -206,7 +207,7 @@ function Chat() {
                     <ProfileDrawer />
                     <label htmlFor="searchFriend">
                         <div
-                            className="rounded-3xl border bg-white border-solid px-4 flex items-center"
+                            className="rounded-3xl border bg-white b order-solid px-4 flex items-center"
                             css={searchBarCSS}
                         >
                             <SearchIcon className="font-s20 opacity-70" />
@@ -226,14 +227,28 @@ function Chat() {
                     )}
                     {recently_.current.map((one) => (
                         <Fragment key={one.id}>
-                            <FriendChatRoom
-                                id={one.id}
-                                unread={one.id === "2@" || one.id === "5@"}
-                                name={one.name}
-                                avatar={one.avatar}
-                                state={one.state}
-                                onClick={() => handleOpenChatRoom(one)}
-                            />
+                            <div className={`relative ${active === one.id ? "bg-gray-100" : ""}`}>
+                                <div
+                                    className="absolute left-0 h-full top-0 bg-slate-700"
+                                    css={
+                                        active === one.id
+                                            ? css`
+                                                  width: 4px;
+                                              `
+                                            : ""
+                                    }
+                                ></div>
+                                <FriendChatRoom
+                                    id={one.id}
+                                    unread={one.id === "2@" || one.id === "5@"}
+                                    name={one.name}
+                                    avatar={one.avatar}
+                                    state={one.state}
+                                    onClick={() => {
+                                        handleOpenChatRoom(one), setActive(one.id);
+                                    }}
+                                />
+                            </div>
                             <hr />
                         </Fragment>
                     ))}
@@ -242,14 +257,28 @@ function Chat() {
                     )}
                     {others_.current.map((one) => (
                         <Fragment key={one.id}>
-                            <FriendChatRoom
-                                id={one.id}
-                                text="Hello developer😊"
-                                name={one.name}
-                                avatar={one.avatar}
-                                state={one.state}
-                                onClick={() => handleOpenChatRoom(one)}
-                            />
+                            <div className={`relative ${active === one.id ? "bg-gray-100" : ""}`}>
+                                <div
+                                    className="absolute left-0 h-full top-0 bg-slate-700"
+                                    css={
+                                        active === one.id
+                                            ? css`
+                                                  width: 4px;
+                                              `
+                                            : ""
+                                    }
+                                ></div>
+                                <FriendChatRoom
+                                    id={one.id}
+                                    text="Hello developer😊"
+                                    name={one.name}
+                                    avatar={one.avatar}
+                                    state={one.state}
+                                    onClick={() => {
+                                        handleOpenChatRoom(one), setActive(one.id);
+                                    }}
+                                />
+                            </div>
                             <hr />
                         </Fragment>
                     ))}
