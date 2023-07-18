@@ -177,13 +177,13 @@ function Chat() {
     useEffect(() => {
         const handler = (e: CustomEventInit<friend>) => {
             if (
-                !recently_.current.reduce((init, elem) => {
+                recently_.current.reduce((init, elem) => {
                     return init || elem.id === e.detail!.id;
                 }, false)
             ) {
+                recently_.current = recently_.current.filter((elem) => elem.id !== e.detail!.id);
                 recently_.current.unshift(e.detail!);
             } else {
-                recently_.current = recently_.current.filter((elem) => elem.id !== e.detail!.id);
                 recently_.current.unshift(e.detail!);
             }
             forceUpdate({});
@@ -203,92 +203,9 @@ function Chat() {
     const handleOpenChatRoom = (target: friend) => {
         window.dispatchEvent(new CustomEvent("chat/openChatRoom", { detail: target }));
     };
-    const Sidebar = () => (
-        <div className="h-full flex flex-col overflow-hidden shrink-0" css={leftCSS}>
-            <div className="px-8 py-4 border border-solid" css={headerCSS}>
-                <ProfileDrawer />
-                <label htmlFor="searchFriend">
-                    <div
-                        className="rounded-3xl border bg-white b order-solid px-4 flex items-center"
-                        css={searchBarCSS}
-                    >
-                        <SearchIcon className="font-s20 opacity-70" />
-                        <InputBase
-                            id="searchFriend"
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value)}
-                            value={searchText}
-                            placeholder="Search or start new chat"
-                            className="py-1 px-4 text-sm"
-                        />
-                    </div>
-                </label>
-            </div>
-            <div className="border-r border-solid bg-white overflow-auto grow">
-                {!!recently_.current.length && <h2 className="text-xl text-darkPurple py-6 px-8 font-medium">Chats</h2>}
-                {recently_.current.map((one) => (
-                    <Fragment key={one.id}>
-                        <div className={`relative ${active === one.id ? "bg-gray-100" : ""}`}>
-                            <div
-                                className="absolute left-0 h-full top-0 bg-slate-700"
-                                css={
-                                    active === one.id
-                                        ? css`
-                                              width: 4px;
-                                          `
-                                        : ""
-                                }
-                            ></div>
-                            <FriendChatRoom
-                                id={one.id}
-                                unread={one.id === "2@" || one.id === "5@"}
-                                name={one.name}
-                                avatar={one.avatar}
-                                state={one.state}
-                                onClick={() => {
-                                    handleOpenChatRoom(one), setActive(one.id);
-                                    toggleDrawer();
-                                }}
-                            />
-                        </div>
-                        <hr />
-                    </Fragment>
-                ))}
-                {!!others_.current.length && (
-                    <h2 className="text-xl text-darkPurple py-6 px-8 font-medium">Contacts</h2>
-                )}
-                {others_.current.map((one) => (
-                    <Fragment key={one.id}>
-                        <div className={`relative ${active === one.id ? "bg-gray-100" : ""}`}>
-                            <div
-                                className="absolute left-0 h-full top-0 bg-slate-700"
-                                css={
-                                    active === one.id
-                                        ? css`
-                                              width: 4px;
-                                          `
-                                        : ""
-                                }
-                            ></div>
-                            <FriendChatRoom
-                                id={one.id}
-                                text="Hello developer😊"
-                                name={one.name}
-                                avatar={one.avatar}
-                                state={one.state}
-                                onClick={() => {
-                                    handleOpenChatRoom(one), setActive(one.id);
-                                    toggleDrawer();
-                                }}
-                            />
-                        </div>
-                        <hr />
-                    </Fragment>
-                ))}
-            </div>
-        </div>
-    );
+
     return (
-        <div className="bg-color h-full flex w-full relative temp">
+        <div className="bg-color h-full flex w-full relative">
             <div
                 css={css`
                     @media (max-width: 1200px) {
@@ -296,7 +213,88 @@ function Chat() {
                     }
                 `}
             >
-                <Sidebar />
+                <div className="h-full flex flex-col overflow-hidden shrink-0" css={leftCSS}>
+                    <div className="px-8 py-4 border border-solid" css={headerCSS}>
+                        <ProfileDrawer />
+                        <label htmlFor="searchFriend">
+                            <div
+                                className="rounded-3xl border bg-white b order-solid px-4 flex items-center"
+                                css={searchBarCSS}
+                            >
+                                <SearchIcon className="font-s20 opacity-70" />
+                                <InputBase
+                                    id="searchFriend"
+                                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value)}
+                                    value={searchText}
+                                    placeholder="Search or start new chat"
+                                    className="py-1 px-4 text-sm"
+                                />
+                            </div>
+                        </label>
+                    </div>
+                    <div className="border-r border-solid bg-white overflow-auto grow">
+                        {!!recently_.current.length && (
+                            <h2 className="text-xl text-darkPurple py-6 px-8 font-medium">Chats</h2>
+                        )}
+                        {recently_.current.map((one) => (
+                            <Fragment key={one.id}>
+                                <div className={`relative ${active === one.id ? "bg-gray-100" : ""}`}>
+                                    <div
+                                        className="absolute left-0 h-full top-0 bg-slate-700"
+                                        css={
+                                            active === one.id
+                                                ? css`
+                                                      width: 4px;
+                                                  `
+                                                : ""
+                                        }
+                                    ></div>
+                                    <FriendChatRoom
+                                        id={one.id}
+                                        unread={one.id === "2@" || one.id === "5@"}
+                                        name={one.name}
+                                        avatar={one.avatar}
+                                        state={one.state}
+                                        onClick={() => {
+                                            handleOpenChatRoom(one), setActive(one.id);
+                                        }}
+                                    />
+                                </div>
+                                <hr />
+                            </Fragment>
+                        ))}
+                        {!!others_.current.length && (
+                            <h2 className="text-xl text-darkPurple py-6 px-8 font-medium">Contacts</h2>
+                        )}
+                        {others_.current.map((one) => (
+                            <Fragment key={one.id}>
+                                <div className={`relative ${active === one.id ? "bg-gray-100" : ""}`}>
+                                    <div
+                                        className="absolute left-0 h-full top-0 bg-slate-700"
+                                        css={
+                                            active === one.id
+                                                ? css`
+                                                      width: 4px;
+                                                  `
+                                                : ""
+                                        }
+                                    ></div>
+                                    <FriendChatRoom
+                                        id={one.id}
+                                        text="Hello developer😊"
+                                        name={one.name}
+                                        avatar={one.avatar}
+                                        state={one.state}
+                                        onClick={() => {
+                                            handleOpenChatRoom(one), setActive(one.id);
+                                        }}
+                                    />
+                                </div>
+                                <hr />
+                            </Fragment>
+                        ))}
+                    </div>
+                </div>
             </div>
             <Drawer anchor="left" open={open} onClose={toggleDrawer}>
                 <Box
@@ -307,7 +305,90 @@ function Chat() {
                     }}
                     role="presentation"
                 >
-                    <Sidebar />
+                    <div className="h-full flex flex-col overflow-hidden shrink-0" css={leftCSS}>
+                        <div className="px-8 py-4 border border-solid" css={headerCSS}>
+                            <ProfileDrawer />
+                            <label htmlFor="searchFriend">
+                                <div
+                                    className="rounded-3xl border bg-white b order-solid px-4 flex items-center"
+                                    css={searchBarCSS}
+                                >
+                                    <SearchIcon className="font-s20 opacity-70" />
+                                    <InputBase
+                                        id="searchFriend"
+                                        onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchText(e.target.value)}
+                                        value={searchText}
+                                        placeholder="Search or start new chat"
+                                        className="py-1 px-4 text-sm"
+                                    />
+                                </div>
+                            </label>
+                        </div>
+                        <div className="border-r border-solid bg-white overflow-auto grow">
+                            {!!recently_.current.length && (
+                                <h2 className="text-xl text-darkPurple py-6 px-8 font-medium">Chats</h2>
+                            )}
+                            {recently_.current.map((one) => (
+                                <Fragment key={one.id}>
+                                    <div className={`relative ${active === one.id ? "bg-gray-100" : ""}`}>
+                                        <div
+                                            className="absolute left-0 h-full top-0 bg-slate-700"
+                                            css={
+                                                active === one.id
+                                                    ? css`
+                                                          width: 4px;
+                                                      `
+                                                    : ""
+                                            }
+                                        ></div>
+                                        <FriendChatRoom
+                                            id={one.id}
+                                            unread={one.id === "2@" || one.id === "5@"}
+                                            name={one.name}
+                                            avatar={one.avatar}
+                                            state={one.state}
+                                            onClick={() => {
+                                                handleOpenChatRoom(one), setActive(one.id);
+                                                if (window.innerWidth < 1400) toggleDrawer();
+                                            }}
+                                        />
+                                    </div>
+                                    <hr />
+                                </Fragment>
+                            ))}
+                            {!!others_.current.length && (
+                                <h2 className="text-xl text-darkPurple py-6 px-8 font-medium">Contacts</h2>
+                            )}
+                            {others_.current.map((one) => (
+                                <Fragment key={one.id}>
+                                    <div className={`relative ${active === one.id ? "bg-gray-100" : ""}`}>
+                                        <div
+                                            className="absolute left-0 h-full top-0 bg-slate-700"
+                                            css={
+                                                active === one.id
+                                                    ? css`
+                                                          width: 4px;
+                                                      `
+                                                    : ""
+                                            }
+                                        ></div>
+                                        <FriendChatRoom
+                                            id={one.id}
+                                            text="Hello developer😊"
+                                            name={one.name}
+                                            avatar={one.avatar}
+                                            state={one.state}
+                                            onClick={() => {
+                                                handleOpenChatRoom(one), setActive(one.id);
+                                                if (window.innerWidth < 1400) toggleDrawer();
+                                            }}
+                                        />
+                                    </div>
+                                    <hr />
+                                </Fragment>
+                            ))}
+                        </div>
+                    </div>
                 </Box>
             </Drawer>
             <ChatRoom onToggle={toggleDrawer} />

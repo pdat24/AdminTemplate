@@ -99,6 +99,7 @@ function Login() {
                         </a>
                     </div>
                     <Fab
+                        onClick={() => (window.location.href = "/pages/analytics")}
                         variant="extended"
                         className="font-medium bg-darkPurple w-full"
                         css={css`
@@ -108,9 +109,7 @@ function Login() {
                             }
                         `}
                     >
-                        <span className="text-white" onClick={() => (window.location.href = "/pages/analytics")}>
-                            Sign in
-                        </span>
+                        <span className="text-white">Sign in</span>
                     </Fab>
                     <div className="flex items-center my-6">
                         <hr className="grow" />

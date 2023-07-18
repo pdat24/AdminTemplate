@@ -163,7 +163,14 @@ function ChatRoom({ onToggle }: { onToggle: () => void }) {
                         <div className="h-16 w-full bg-milk border border-solid flex items-center shrink-0">
                             <div className="flex items-center justify-between px-4 w-full">
                                 <div className="flex items-center">
-                                    <div onClick={onToggle}>
+                                    <div
+                                        onClick={onToggle}
+                                        css={css`
+                                            @media (min-width: 1201px) {
+                                                display: none;
+                                            }
+                                        `}
+                                    >
                                         <Tooltip title="Select a chat" placement="bottom">
                                             <Fab
                                                 css={css`
@@ -179,7 +186,7 @@ function ChatRoom({ onToggle }: { onToggle: () => void }) {
                                     <div
                                         onClick={() => {
                                             window.dispatchEvent(new CustomEvent("chatroom/openrightside"));
-                                            toggleDrawer();
+                                            if (window.innerWidth < 1400) toggleDrawer();
                                         }}
                                         className="cursor-pointer flex items-center ml-2"
                                     >
@@ -197,25 +204,27 @@ function ChatRoom({ onToggle }: { onToggle: () => void }) {
                     </div>
                     <div
                         css={css`
-                            @media (max-width: 1200px) {
+                            @media (max-width: 1400px) {
                                 display: none;
                             }
                         `}
                     >
                         <ContactInfo data={data} />
                     </div>
-                    <Drawer anchor="right" open={open} onClose={toggleDrawer}>
-                        <Box
-                            sx={{
-                                backgroundColor: "#f1f5f9",
-                                overflowX: "hidden",
-                                minHeight: "100vh",
-                            }}
-                            role="presentation"
-                        >
-                            <ContactInfo onToggle={toggleDrawer} data={data} />
-                        </Box>
-                    </Drawer>
+                    <div>
+                        <Drawer anchor="right" open={open} onClose={toggleDrawer}>
+                            <Box
+                                sx={{
+                                    backgroundColor: "#f1f5f9",
+                                    overflowX: "hidden",
+                                    minHeight: "100vh",
+                                }}
+                                role="presentation"
+                            >
+                                <ContactInfo onToggle={toggleDrawer} data={data} />
+                            </Box>
+                        </Drawer>
+                    </div>
                 </div>
             ) : (
                 <div className="grow p-6 h-full">

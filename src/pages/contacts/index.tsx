@@ -199,7 +199,7 @@ function Contacts() {
         return res;
     };
     return (
-        <div className="bg-white flex h-full">
+        <div className="bg-white flex h-full overflow-hidden">
             <div className="grow flex flex-col h-full overflow-hidden">
                 <div className="p-8 border-b border-solid bg-white">
                     <div>
