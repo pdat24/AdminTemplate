@@ -102,8 +102,25 @@ function Project() {
                     `}
                 >
                     <div className="grow my-12 ">
-                        <div className="flex justify-between">
-                            <div className="flex items-center">
+                        <div
+                            className="flex justify-between"
+                            css={css`
+                                @media (max-width: 950px) {
+                                    flex-direction: column;
+                                    gap: 24px;
+                                }
+                            `}
+                        >
+                            <div
+                                className="flex items-center"
+                                css={css`
+                                    @media (max-width: 680px) {
+                                        flex-direction: column;
+                                        gap: 12px;
+                                        align-items: center;
+                                    }
+                                `}
+                            >
                                 <Avatar src={avatar} sx={{ width: "64px", height: "64px" }} />
                                 <div className="ml-4">
                                     <div className="text-4xl font-medium">Welcome back, Phạm Quốc Đạt!</div>

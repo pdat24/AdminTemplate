@@ -42,18 +42,52 @@ function Photos() {
     };
     return (
         <div className="bg-color">
-            <div className="w1024 m-auto p-8">
+            <div
+                className="m-auto p-8"
+                css={css`
+                    max-width: 1024px;
+                    width: 100%;
+                    }
+                `}
+            >
                 <div className="mb-12">
                     <Label time="July 2023" num="5 photos"></Label>
-                    <div className="flex gap-6 flex-wrap">{renderImg(5)}</div>
+                    <div
+                        className="flex gap-6 flex-wrap"
+                        css={css`
+                            @media (max-width: 1200px) {
+                                justify-content: center;
+                            }
+                        `}
+                    >
+                        {renderImg(5)}
+                    </div>
                 </div>
                 <div className="mb-12">
                     <Label time="May 2018" num="10 photos"></Label>
-                    <div className="flex gap-6 flex-wrap">{renderImg(10)}</div>
+                    <div
+                        className="flex gap-6 flex-wrap"
+                        css={css`
+                            @media (max-width: 1200px) {
+                                justify-content: center;
+                            }
+                        `}
+                    >
+                        {renderImg(10)}
+                    </div>
                 </div>
                 <div className="mb-12">
                     <Label time="April 2018" num="7 photos"></Label>
-                    <div className="flex gap-6 flex-wrap">{renderImg(7)}</div>
+                    <div
+                        className="flex gap-6 flex-wrap"
+                        css={css`
+                            @media (max-width: 1200px) {
+                                justify-content: center;
+                            }
+                        `}
+                    >
+                        {renderImg(7)}
+                    </div>
                 </div>
             </div>
         </div>

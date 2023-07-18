@@ -1,5 +1,7 @@
 /**@jsxImportSource @emotion/react */
 import SearchIcon from "@mui/icons-material/Search";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Box, Drawer } from "@mui/material";
 import { css } from "@emotion/react";
 import { InputBase, Checkbox, Avatar } from "@mui/material";
 import { colorWarn, colorDanger } from "~/components/colors";
@@ -96,7 +98,7 @@ interface MessageProps {
     onActive?: () => void;
 }
 
-function Message({ onActive, important, avatar, name, title, content, starred, id, tags }: MessageProps) {
+function Message({ onActive, important, avatar, name, title, content, starred, id, tags, onToggle }: MessageProps) {
     const [checked, setChecked] = useState(false);
     const handleClickCheckbox = (e: ChangeEvent<HTMLInputElement>) => {
         e.stopPropagation();
@@ -165,6 +167,9 @@ function Message({ onActive, important, avatar, name, title, content, starred, i
             })
         );
         onActive && onActive();
+        setTimeout(() => {
+            if (window.innerWidth <= 850) onToggle();
+        }, 200);
     };
     return (
         <div
@@ -239,7 +244,9 @@ function generateMsgs(amount: number) {
     return res;
 }
 
-function MailBanner({ type }: { type: typeValids }) {
+function MailBanner({ type, onToggle }: { type: typeValids; onToggle: () => void }) {
+    const [open, setOpen] = useState(false);
+    const toggleDrawer = () => setOpen(!open);
     const initMsgs = useRef<msgType[]>(generateMsgs(AMOUNT_MSGS));
     const [searchText, setSearchText] = useState("");
     const [msgs, setMsgs] = useState<msgType[]>(initMsgs.current);
@@ -264,42 +271,64 @@ function MailBanner({ type }: { type: typeValids }) {
         } else msgsList = initMsgs.current.filter((msg) => msg.type === type);
         setMsgs(msgsList);
     }, [type]);
-    const renderMessage = (msg: msgType) => (
-        <div className="flex relative" key={msg.id}>
-            <div
-                className="absolute left-0 h-full top-0 bg-gray-400"
-                css={
-                    active === msg.id
-                        ? css`
-                              width: 4px;
-                          `
-                        : ""
-                }
-            ></div>
-            <Message
-                id={msg.id}
-                starred={msg.starred}
-                important={msg.important}
-                avatar={msg.avatar}
-                name={msg.name}
-                title={msg.title}
-                onActive={() => {
-                    setActive(msg.id);
-                    setSearchText("");
-                }}
-                tags={msg.tags}
-                content={msg.content}
-            />
-        </div>
-    );
+    const renderMessage = (msg: msgType) => {
+        return (
+            <div className="flex relative" key={msg.id}>
+                <div
+                    className="absolute left-0 h-full top-0 bg-gray-400"
+                    css={
+                        active === msg.id
+                            ? css`
+                                  width: 4px;
+                              `
+                            : ""
+                    }
+                ></div>
+                <Message
+                    id={msg.id}
+                    onToggle={toggleDrawer}
+                    starred={msg.starred}
+                    important={msg.important}
+                    avatar={msg.avatar}
+                    name={msg.name}
+                    title={msg.title}
+                    onActive={() => {
+                        setActive(msg.id);
+                        setSearchText("");
+                    }}
+                    tags={msg.tags}
+                    content={msg.content}
+                />
+            </div>
+        );
+    };
     return (
-        <div className="h-full grow flex">
+        <div
+            className="h-full grow flex"
+            css={css`
+                @media (max-width: 850px) {
+                    width: 100%;
+                }
+            `}
+        >
             <MailContext value={[msgs, setMsgs]}>
-                <div className="border border-solid bg-white h-full overflow-hidden w400 shrink-0">
+                <div
+                    className="border border-solid bg-white h-full overflow-hidden w400 shrink-0"
+                    css={css`
+                        @media (max-width: 850px) {
+                            width: 100%;
+                        }
+                    `}
+                >
                     <div className="h-full overflow-hidden flex flex-col">
                         <div className="shrink-0">
                             <div className="h64 bg-color border-b border-solid flex items-center p-3">
-                                <div className="font-medium mr-4 text-sm">INBOX</div>
+                                <div className="flex items-center gap-3">
+                                    <div onClick={onToggle}>
+                                        <MenuIcon className="font-s20 cursor-pointer" />
+                                    </div>
+                                    <div className="font-medium mr-4 text-sm">INBOX</div>
+                                </div>
                                 <label htmlFor="searchMail" className="grow">
                                     <div
                                         className="rounded-3xl border border-solid border-gray-400 opacity-80 px-4 flex items-center"
@@ -334,7 +363,28 @@ function MailBanner({ type }: { type: typeValids }) {
                     </div>
                 </div>
             </MailContext>
-            <MailContent />
+            <div
+                css={css`
+                    width: 100%;
+                    @media (max-width: 850px) {
+                        display: none;
+                    }
+                `}
+            >
+                <MailContent />
+            </div>
+            <Drawer anchor="right" open={open} onClose={toggleDrawer}>
+                <Box
+                    sx={{
+                        backgroundColor: "#f1f5f9",
+                        overflowX: "hidden",
+                        minHeight: "100vh",
+                    }}
+                    role="presentation"
+                >
+                    <MailContent />
+                </Box>
+            </Drawer>
         </div>
     );
 }

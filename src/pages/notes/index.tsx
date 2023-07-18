@@ -4,6 +4,8 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import SearchIcon from "@mui/icons-material/Search";
 import { Fab, InputBase } from "@mui/material";
 import NoteContext from "./NoteContext";
+import MenuIcon from "@mui/icons-material/Menu";
+
 import { resetFab } from "~/components/CSS";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
 import LocalOfferOutlinedIcon from "@mui/icons-material/LocalOfferOutlined";
@@ -16,6 +18,7 @@ import { useState, Dispatch, SetStateAction } from "react";
 import { floatUp } from "~/components/Animations";
 import { noteType } from "./colNotes";
 import ANote from "./NoteUpdateDialog";
+import { Box, Drawer } from "@mui/material";
 import createId from "~/components/generateID";
 
 const wrapper = css`
@@ -89,6 +92,8 @@ function renderNotes(data: colProp[], setData: Dispatch<SetStateAction<colProp[]
 }
 
 function Notes() {
+    const [open, setOpen] = useState(false);
+    const toggleDrawer = () => setOpen(!open);
     const tags = ["Friends", "Personal", "Priority", "Tasks", "Work", "Family"];
     const [type, setType] = useState<noteType | labelsType>("note");
     const [col1, setCol1] = useState(col1Note);
@@ -101,12 +106,42 @@ function Notes() {
         { icon: NotificationsActiveIcon, text: "Reminders", path: "reminder" },
         { icon: Inventory2OutlinedIcon, text: "Archive", path: "archive" },
     ];
+    const Sidebar = () => (
+        <div className="h-full overflow-auto  bg-white border-r border-solid shrink-0" css={w240}>
+            <div className="px-4 py-6 overflow-auto">
+                {typeNav.map((Item) => (
+                    <h3
+                        style={type === Item.path ? { backgroundColor: "rgba(0, 0, 0, 0.05)" } : {}}
+                        css={linkCSS}
+                        key={Item.path}
+                        onClick={() => {
+                            setType(Item.path);
+                        }}
+                    >
+                        <Item.icon className="opacity-50" />
+                        <div className="font-medium">{Item.text}</div>
+                    </h3>
+                ))}
+                {tags.map((tag) => (
+                    <h3 css={linkCSS} key={tag} onClick={() => setType(tag.toLowerCase())}>
+                        <LocalOfferOutlinedIcon className="opacity-50" />
+                        <div className="font-medium">{tag}</div>
+                    </h3>
+                ))}
+            </div>
+        </div>
+    );
     return (
         <div className="h-full">
             <div className="flex flex-col h-full">
                 <div className="px-8 py-6 bg-color flex items-center shrink-0">
-                    <div className="text-3xl font-bold" css={w224}>
-                        Notes
+                    <div className="flex items-center gap-2">
+                        <div onClick={toggleDrawer}>
+                            <MenuIcon className="font-s20 cursor-pointer" />
+                        </div>
+                        <div className="text-3xl font-bold" css={w224}>
+                            Notes
+                        </div>
                     </div>
                     <div className="flex opacity-80 items-center grow">
                         <Fab css={btn}>
@@ -125,29 +160,28 @@ function Notes() {
                 </div>
                 <div className="grow shrink-0 h-full basis-1 overflow-hidden">
                     <BlockContainer className="bg-white overflow-hidden h-full flex">
-                        <div className="h-full overflow-auto  bg-white border-r border-solid shrink-0" css={w240}>
-                            <div className="px-4 py-6 overflow-auto">
-                                {typeNav.map((Item) => (
-                                    <h3
-                                        style={type === Item.path ? { backgroundColor: "rgba(0, 0, 0, 0.05)" } : {}}
-                                        css={linkCSS}
-                                        key={Item.path}
-                                        onClick={() => {
-                                            setType(Item.path);
-                                        }}
-                                    >
-                                        <Item.icon className="opacity-50" />
-                                        <div className="font-medium">{Item.text}</div>
-                                    </h3>
-                                ))}
-                                {tags.map((tag) => (
-                                    <h3 css={linkCSS} key={tag} onClick={() => setType(tag.toLowerCase())}>
-                                        <LocalOfferOutlinedIcon className="opacity-50" />
-                                        <div className="font-medium">{tag}</div>
-                                    </h3>
-                                ))}
-                            </div>
+                        <div
+                            css={css`
+                                width: 240px;
+                                @media (max-width: 1200px) {
+                                    display: none;
+                                }
+                            `}
+                        >
+                            <Sidebar />
                         </div>
+                        <Drawer anchor="left" open={open} onClose={toggleDrawer}>
+                            <Box
+                                sx={{
+                                    backgroundColor: "#f1f5f9",
+                                    overflowX: "hidden",
+                                    minHeight: "100vh",
+                                }}
+                                role="presentation"
+                            >
+                                <Sidebar />
+                            </Box>
+                        </Drawer>
                         <div className="overflow-auto grow h-full">
                             <div className="p-6">
                                 <BlockContainer

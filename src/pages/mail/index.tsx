@@ -14,6 +14,7 @@ import StarBorderOutlinedIcon from "@mui/icons-material/StarBorderOutlined";
 import { red, purple, blue, green } from "@mui/material/colors";
 import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import { useState, Dispatch, SetStateAction } from "react";
+import { Box, Drawer } from "@mui/material";
 import MailBanner from "./MailBanner";
 import { createContext, useContext } from "react";
 const w288 = css`
@@ -81,6 +82,8 @@ function Label({ children }: { children: string }) {
 function Mail() {
     const [type, setType] = useState<typeValids>("inbox");
     const [active, setActive] = useState<string>("inbox");
+    const [open, setOpen] = useState(false);
+    const toggleDrawer = () => setOpen(!open);
     const group1 = [
         { Icon: AllInboxIcon, label: "inbox", onSetType: () => setType("inbox") },
         { Icon: SendOutlinedIcon, label: "sent", onSetType: () => setType("sent") },
@@ -96,59 +99,83 @@ function Mail() {
         { color: purple[700], label: "Accounts", onSetType: () => setType({ tags: ["accounts"] }) },
         { color: green[700], label: "Forums", onSetType: () => setType({ tags: ["forums"] }) },
     ];
-    return (
-        <div className="h-full flex">
-            <div className="h-full overflow-hidden shrink-0">
-                <div css={w288} className="h-full overflow-auto bg-white border border-solid">
-                    <div className="m-6 mt-10">
-                        <div className="font-extrabold text-3xl mb-6">Mailbox</div>
-                        <CustomBtn css={addBtn} className="bg-darkPurple">
-                            <AddOutlinedIcon />
-                            <span className="ml-2">Compose</span>
-                        </CustomBtn>
-                    </div>
-                    <Context.Provider value={[active, setActive]}>
+    const Sidebar = () => (
+        <div className="h-full overflow-hidden shrink-0">
+            <div css={w288} className="h-full overflow-auto bg-white border border-solid">
+                <div className="m-6 mt-10">
+                    <div className="font-extrabold text-3xl mb-6">Mailbox</div>
+                    <CustomBtn css={addBtn} className="bg-darkPurple">
+                        <AddOutlinedIcon />
+                        <span className="ml-2">Compose</span>
+                    </CustomBtn>
+                </div>
+
+                <Context.Provider value={[active, setActive]}>
+                    <div>
                         <div>
-                            <div>
-                                <Label>MAILBOXES</Label>
-                                <div className="px-3 mb-6">
-                                    {group1.map((Elem) => (
-                                        <CustomLink key={Elem.label} label={Elem.label} onSetType={Elem.onSetType}>
-                                            <Elem.Icon />
-                                            <span className="font-medium capitalize">{Elem.label}</span>
-                                        </CustomLink>
-                                    ))}
-                                </div>
-                                <Label>Filters</Label>
-                                <div className="px-3 mb-6">
-                                    <CustomLink onSetType={() => setType("starred")} label="starred">
-                                        <StarBorderOutlinedIcon />
-                                        <span className="font-medium capitalize">Starred</span>
+                            <Label>MAILBOXES</Label>
+                            <div className="px-3 mb-6">
+                                {group1.map((Elem) => (
+                                    <CustomLink key={Elem.label} label={Elem.label} onSetType={Elem.onSetType}>
+                                        <Elem.Icon />
+                                        <span className="font-medium capitalize">{Elem.label}</span>
                                     </CustomLink>
-                                    <CustomLink onSetType={() => setType("important")} label="important">
-                                        <InfoOutlinedIcon />
-                                        <span className="font-medium capitalize">important</span>
+                                ))}
+                            </div>
+                            <Label>Filters</Label>
+                            <div className="px-3 mb-6">
+                                <CustomLink onSetType={() => setType("starred")} label="starred">
+                                    <StarBorderOutlinedIcon />
+                                    <span className="font-medium capitalize">Starred</span>
+                                </CustomLink>
+                                <CustomLink onSetType={() => setType("important")} label="important">
+                                    <InfoOutlinedIcon />
+                                    <span className="font-medium capitalize">important</span>
+                                </CustomLink>
+                            </div>
+                            <Label>Labels</Label>
+                            <div className="px-3 mb-6">
+                                {labels.map((elem) => (
+                                    <CustomLink key={elem.label} label={elem.label} onSetType={elem.onSetType}>
+                                        <SellOutlinedIcon
+                                            css={css`
+                                                color: ${elem.color};
+                                            `}
+                                        />
+                                        <span className="font-medium capitalize">{elem.label}</span>
                                     </CustomLink>
-                                </div>
-                                <Label>Labels</Label>
-                                <div className="px-3 mb-6">
-                                    {labels.map((elem) => (
-                                        <CustomLink key={elem.label} label={elem.label} onSetType={elem.onSetType}>
-                                            <SellOutlinedIcon
-                                                css={css`
-                                                    color: ${elem.color};
-                                                `}
-                                            />
-                                            <span className="font-medium capitalize">{elem.label}</span>
-                                        </CustomLink>
-                                    ))}
-                                </div>
+                                ))}
                             </div>
                         </div>
-                    </Context.Provider>
-                </div>
+                    </div>
+                </Context.Provider>
             </div>
-            <MailBanner type={type} />
+        </div>
+    );
+    return (
+        <div className="h-full flex">
+            <div
+                css={css`
+                    @media (max-width: 1400px) {
+                        display: none;
+                    }
+                `}
+            >
+                <Sidebar />
+            </div>
+            <Drawer anchor="left" open={open} onClose={toggleDrawer}>
+                <Box
+                    sx={{
+                        backgroundColor: "#f1f5f9",
+                        overflowX: "hidden",
+                        minHeight: "100vh",
+                    }}
+                    role="presentation"
+                >
+                    <Sidebar />
+                </Box>
+            </Drawer>
+            <MailBanner onToggle={toggleDrawer} type={type} />
         </div>
     );
 }

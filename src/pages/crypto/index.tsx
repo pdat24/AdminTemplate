@@ -8,14 +8,15 @@ import chart5 from "~/assets/imgs/crypto/chart5.svg";
 import chart6 from "~/assets/imgs/crypto/chart6.svg";
 import lgChart from "~/assets/imgs/crypto/lgChart.svg";
 import NorthIcon from "@mui/icons-material/North";
+import MenuIcon from "@mui/icons-material/Menu";
 import SouthIcon from "@mui/icons-material/South";
 import { colorSuccess, colorDanger } from "~/components/colors";
 import MenuItem from "@mui/material/MenuItem";
-import { Divider } from "@mui/material";
+import { Divider, Box, Drawer } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 
 const textInpt14 = css`
@@ -81,7 +82,7 @@ function FormBlock() {
                 <div className="flex border border-solid rounded border-slate-400">
                     <TextField
                         value={amount || ""}
-                        onChange={(e: ChangeEvent) => setAmount(+e.target.value)}
+                        onChange={(e) => setAmount(+e.target.value)}
                         label="Amount"
                         variant="outlined"
                         type="number"
@@ -121,33 +122,81 @@ function Crypto() {
         { label: "Zcash(ZEC)", amount: "$58.41", chart: chart5, state: 0 },
         { label: "Bitcoin Gold(BTG)", amount: "$12.23", chart: chart6, state: 0 },
     ];
-    return (
-        <div className="bg-color flex">
-            <div className="w-80 border-r border-solid border-slate-200">
-                <div>
-                    {data.map((elem, index) => (
-                        <div className="p-5 flex bg-white border-b border-solid " key={index}>
-                            <div className=" mr-4">
-                                <div className="opacity-80 font-s13">{elem.label}</div>
-                                <div className="flex mt-2 gap-2">
-                                    <div className="text-xl font-medium">{elem.amount}</div>
-                                    <div css={elem.state ? colorSuccess : colorDanger} className="font-medium">
-                                        {!!elem.state && <NorthIcon className="font-s16" />}
-                                        {!elem.state && <SouthIcon className="font-s16" />}
-                                        <span className="text-xs">2.35%</span>
-                                    </div>
+    const [open, setOpen] = useState(false);
+    const toggleDrawer = () => setOpen(!open);
+    const Temp = () => (
+        <div className="w-80 border-r border-solid border-slate-200">
+            <div>
+                {data.map((elem, index) => (
+                    <div className="p-5 flex bg-white border-b border-solid " key={index}>
+                        <div className=" mr-4">
+                            <div className="opacity-80 font-s13">{elem.label}</div>
+                            <div className="flex mt-2 gap-2">
+                                <div className="text-xl font-medium">{elem.amount}</div>
+                                <div css={elem.state ? colorSuccess : colorDanger} className="font-medium">
+                                    {!!elem.state && <NorthIcon className="font-s16" />}
+                                    {!elem.state && <SouthIcon className="font-s16" />}
+                                    <span className="text-xs">2.35%</span>
                                 </div>
                             </div>
-                            <img src={elem.chart} alt="photo" className="no-drag" />
                         </div>
-                    ))}
-                </div>
-                <FormBlock />
+                        <img src={elem.chart} alt="photo" className="no-drag" />
+                    </div>
+                ))}
             </div>
-            <div>
-                <div className="py-3 px-4 flex justify-between bg-white">
+            <FormBlock />
+        </div>
+    );
+    return (
+        <div className="bg-color flex">
+            <div
+                css={css`
+                    @media (max-width: 850px) {
+                        display: none;
+                    }
+                `}
+            >
+                <Temp />
+            </div>
+            <div
+                css={css`
+                    @media (max-width: 850px) {
+                        width: 100%;
+                    }
+                `}
+            >
+                <div className="py-3 px-4 flex justify-between bg-white flex-wrap">
                     <div className="my-3 mx-2">
-                        <div className="opacity-80 font-medium text-xl">Bitcoin (BTC)</div>
+                        <div className="opacity-80 font-medium text-xl flex items-center">
+                            <div>
+                                <div onClick={toggleDrawer}>
+                                    <MenuIcon
+                                        className="font-s20 mr-2 cursor-pointer"
+                                        css={css`
+                                            display: none;
+                                            @media (max-width: 850px) {
+                                                display: inline-block;
+                                            }
+                                        `}
+                                    />
+                                </div>
+                                <Drawer anchor="left" open={open} onClose={toggleDrawer}>
+                                    <Box
+                                        sx={{
+                                            backgroundColor: "#f1f5f9",
+                                            overflowX: "hidden",
+                                            minHeight: "100vh",
+                                        }}
+                                        role="presentation"
+                                    >
+                                        <div>
+                                            <Temp />
+                                        </div>
+                                    </Box>
+                                </Drawer>
+                            </div>
+                            <span>Bitcoin (BTC)M</span>
+                        </div>
                         <div className="flex mt-2 gap-2">
                             <div className="text-2xl font-medium">$8,878.48</div>
                             <div css={colorSuccess} className="font-medium flex items-center">
@@ -178,7 +227,7 @@ function Crypto() {
                         </div>
                     </div>
                 </div>
-                <img src={lgChart} alt="photo" className="no-drag" />
+                <img src={lgChart} alt="photo" className="no-drag" />d
             </div>
         </div>
     );

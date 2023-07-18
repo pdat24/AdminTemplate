@@ -124,13 +124,18 @@ export default function NoteCreator({ type }: { type: noteType }) {
         if (e.key === "Enter") handleAddItem();
     };
     const handleAddNote = (type: noteType) => {
+        let newType: noteType;
+        if (!(type === "archive" || type === "reminder" || type == "note")) {
+            newType = "note";
+            labels.push(type);
+        } else newType = type;
         setters[pos.current - 1]((prev) => {
             prev.push({
                 title,
                 content,
                 items,
                 tags: labels,
-                type: type,
+                type: newType,
             });
             return [...prev];
         });

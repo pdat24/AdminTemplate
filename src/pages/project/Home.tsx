@@ -1,6 +1,8 @@
 /**@jsxImportSource @emotion/react */
-import { css } from "@mui/material";
+import { Divider, css } from "@mui/material";
 import Card from "@mui/material/Card";
+import projectChart1 from "~/assets/imgs/projectChart1.svg";
+import projectChart2 from "~/assets/imgs/projectChart2.svg";
 import CardActions from "@mui/material/CardActions";
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
 import CardContent from "@mui/material/CardContent";
@@ -92,7 +94,7 @@ interface prop {
 
 function TaskCard(props: prop) {
     return (
-        <Card sx={{ minWidth: 261.5 }} className="w-fit" css={radius12}>
+        <Card sx={{ minWidth: 261.5 }} className="w-fit " css={radius12}>
             <CardContent css={pad0}>
                 <div className="flex justify-between items-center pt-3 px-1.5">
                     <div className="px-4">{props.label}</div>
@@ -125,7 +127,7 @@ function TasksBlock() {
         { number: "04", color: colors.success, desc: "Proposals", footText: "Implemented: 8", label: "Features" },
     ];
     return (
-        <div className="flex flex-wrap justify-between">
+        <div className="flex flex-wrap justify-center gap-6">
             {tasks.map((props, index) => (
                 <TaskCard key={index} {...props} />
             ))}
@@ -176,8 +178,17 @@ function Block2() {
                     </Button>
                 </div>
             </div>
-            <div className="flex mt-3">
-                <div className="grow shrink basis-0"></div>
+            <div
+                className="flex mt-3"
+                css={css`
+                    @media (max-width: 1200px) {
+                        flex-direction: column;
+                    }
+                `}
+            >
+                <div className="grow shrink basis-0">
+                    <img src={projectChart1} alt="chart" className="no-drag mx-auto" />
+                </div>
                 <div className="grow shrink basis-0">
                     <div className="text-sm" css={overviewLetter}>
                         Overview
@@ -216,6 +227,7 @@ function Block2() {
 
 function Block3() {
     const [active, setAvtive] = useState(0);
+    const [active2, setAvtive2] = useState(0);
     const data = [
         { label: "Group Meeting", time: "in 32 minnutes", place: "Conference room 1B" },
         { label: "Coffee Break", time: "10:30 AM", place: "" },
@@ -226,8 +238,72 @@ function Block3() {
         { label: "Overseer's Retirement Party", time: "07:30 PM", place: "Overseer's room" },
     ];
     return (
-        <div className="flex mt-6 gap-6">
-            <div className="grow shrink basis-0 p-6 rounded-xl bg-white" css={blockShadow}></div>
+        <div
+            className="flex mt-6 gap-6"
+            css={css`
+                @media (max-width: 1200px) {
+                    flex-direction: column;
+                }
+            `}
+        >
+            <div
+                className="grow shrink overflow-hidden flex flex-col basis-1 rounded-xl"
+                css={css`
+                    ${blockShadow}
+                    @media (max-width: 1200px) {
+                        flex: 1;
+                    }
+                `}
+            >
+                <div className="bg-white p-6">
+                    <div className="flex justify-between">
+                        <div css={textColor} className="font-medium">
+                            Task Distribution
+                        </div>
+                        <div>
+                            <Button
+                                onClick={() => setAvtive2(0)}
+                                css={btnCSS}
+                                variant="outlined"
+                                style={activeStyle(0 === active2)}
+                            >
+                                This Week
+                            </Button>
+                            <Button
+                                onClick={() => setAvtive2(1)}
+                                css={btnCSS}
+                                variant="outlined"
+                                style={activeStyle(1 === active2)}
+                            >
+                                Last Week
+                            </Button>
+                        </div>
+                    </div>
+                    <img src={projectChart2} alt="chart" className="no-drag" />
+                </div>
+                <div
+                    css={css`
+                        min-height: 160px;
+                    `}
+                    className="flex border border-solid bg-color grow items-center justify-center"
+                >
+                    <div className="text-center opacity-80 grow shrink-0 basis-1">
+                        <div className="font-bold text-4xl">594</div>
+                        <div>New Tasks</div>
+                    </div>
+                    <Divider
+                        css={css`
+                            width: 1px;
+                            height: 100%;
+                            background-color: #ddd;
+                        `}
+                    />
+                    <div className="text-center opacity-80 grow shrink-0 basis-1">
+                        <div className="font-bold text-4xl">287</div>
+                        <div>Completed tasks</div>
+                    </div>
+                </div>
+            </div>
             <div className="grow shrink basis-0 p-6 rounded-xl bg-white" css={blockShadow}>
                 <div className="flex justify-between">
                     <div css={textColor} className="font-medium">

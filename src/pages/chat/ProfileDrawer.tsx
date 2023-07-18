@@ -132,7 +132,7 @@ function ProfileDrawer() {
             <div onClick={toggleDrawer} className="flex items-center justify-between mb-4">
                 <div ref={avatarDiv} className="flex items-center cursor-pointer">
                     <AvatarState state="on" alt="photo" />
-                    <div className="ml-4">Pham Quoc Dat</div>
+                    <div className="ml-4">Anosvalodiar</div>
                 </div>
                 <div className="-mr-5">
                     <CustomBtn>

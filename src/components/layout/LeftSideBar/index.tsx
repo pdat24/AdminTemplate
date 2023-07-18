@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { css } from "@emotion/react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Fab } from "@mui/material";
 import { NavLink } from "react-router-dom";
-
 import favicon from "~/assets/imgs/favicon.svg";
 import reactIcon from "~/assets/imgs/react.svg";
 import avatar from "~/assets/imgs/avatar.jpg";
@@ -23,6 +22,7 @@ const reactLabel = css`
 const wrapperCSS = css(`
     min-height: 100vh;
     width: 280px;
+    z-index: 1000;
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
     background-color: rgb(17, 24, 39);
     transition: margin 250ms cubic-bezier(0, 0, 0.2, 1) 0ms;
@@ -87,9 +87,22 @@ function LinksGroup({ label, desc }: { label: string; desc: string }) {
 function LeftSideBar() {
     const wrapperDOM = useRef<HTMLDivElement>(null);
     const [active, setActive] = useState("analytics");
+    useEffect(() => {
+        const handler = () => {
+            if (window.innerWidth <= 1200) {
+                handleHide();
+                wrapperDOM.current!.style.position = "fixed";
+            } else window.dispatchEvent(new CustomEvent("openLeftSideBar"));
+        };
+        window.addEventListener("resize", handler);
+        window.addEventListener("load", handler);
+        return () => {
+            window.removeEventListener("resize", handler);
+        };
+    }, []);
     const handleHide = () => {
         if (wrapperDOM.current) {
-            wrapperDOM.current.style.marginLeft = `${-parseFloat(window.getComputedStyle(wrapperDOM.current).width)}px`;
+            wrapperDOM.current.style.marginLeft = `-280px`;
             window.dispatchEvent(
                 new CustomEvent("closedLeftSideBar", {
                     detail: wrapperDOM.current,
@@ -118,56 +131,58 @@ function LeftSideBar() {
         );
     };
     return (
-        <div ref={wrapperDOM} css={wrapperCSS} className="text-white relative shrink-0">
-            <div css={headerCSS} className="flex items-center px-5 ">
-                <div className="grow mx-1 flex text-xs items-center">
-                    <img src={favicon} alt="photo" css={faviconCSS} />
-                    <div className="mx-2 py-1 px-2 w-fit flex rounded gap-1" css={reactLabel}>
-                        <img src={reactIcon} alt="photo" />
-                        <div>React</div>
-                    </div>
-                </div>
-                <div>
-                    <Fab css={menuCSS} onClick={handleHide}>
-                        <MenuIcon />
-                    </Fab>
-                </div>
-            </div>
-            <div
-                className="overflow-y-auto"
-                css={css`
-                    height: calc(100vh - 72px);
-                `}
-            >
-                <div>
-                    <div className="p-4 pb-3.5">
-                        <div className="flex flex-col items-center">
-                            <div className="mb-6">
-                                <img src={avatar} alt="avatar" css={avatarCSS} />
-                            </div>
-                            <div className="text-sm font-medium mb-1">Pham Quoc Dat</div>
-                            <div
-                                css={css`
-                                    color: rgb(148, 163, 184);
-                                `}
-                                className="text-xs font-medium"
-                            >
-                                admin62661@gmail.com
-                            </div>
+        <>
+            <div ref={wrapperDOM} css={wrapperCSS} className="text-white relative shrink-0">
+                <div css={headerCSS} className="flex items-center px-5 ">
+                    <div className="grow mx-1 flex text-xs items-center">
+                        <img src={favicon} alt="photo" css={faviconCSS} />
+                        <div className="mx-2 py-1 px-2 w-fit flex rounded gap-1" css={reactLabel}>
+                            <img src={reactIcon} alt="photo" />
+                            <div>React</div>
                         </div>
                     </div>
-                    <div className="px-3">
-                        <LinksGroup label="DASHBOARDS" desc="Unique dashboard designs" />
-                        {renderLinks(1)}
-                        <LinksGroup label="APPLICATIONS" desc="Custom made application designs" />
-                        {renderLinks(2)}
+                    <div>
+                        <Fab css={menuCSS} onClick={handleHide}>
+                            <MenuIcon />
+                        </Fab>
                     </div>
                 </div>
-                <div className="py-12 flex justify-center">
-                    <img src={favicon} alt="favicon" className="w-14 opacity-30" />
+                <div
+                    className="overflow-y-auto"
+                    css={css`
+                        height: calc(100vh - 72px);
+                    `}
+                >
+                    <div>
+                        <div className="p-4 pb-3.5">
+                            <div className="flex flex-col items-center">
+                                <div className="mb-6">
+                                    <img src={avatar} alt="avatar" css={avatarCSS} />
+                                </div>
+                                <div className="text-sm font-medium mb-1">Anosvalodiar</div>
+                                <div
+                                    css={css`
+                                        color: rgb(148, 163, 184);
+                                    `}
+                                    className="text-xs font-medium"
+                                >
+                                    admin62661@gmail.com
+                                </div>
+                            </div>
+                        </div>
+                        <div className="px-3">
+                            <LinksGroup label="DASHBOARDS" desc="Unique dashboard designs" />
+                            {renderLinks(1)}
+                            <LinksGroup label="APPLICATIONS" desc="Custom made application designs" />
+                            {renderLinks(2)}
+                        </div>
+                    </div>
+                    <div className="py-12 flex justify-center">
+                        <img src={favicon} alt="favicon" className="w-14 opacity-30" />
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 

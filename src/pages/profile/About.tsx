@@ -45,7 +45,8 @@ function ContentBlock({ label, content }: { label: string; content: string[] }) 
 
 function About() {
     const w1024 = css`
-        width: 1024px;
+        max-width: 1024px;
+        width: 100% !important;
     `;
     const temp = css`
         padding: 2px 8px;
@@ -53,8 +54,24 @@ function About() {
     `;
     return (
         <div className="bg-color">
-            <div className="p-8 mx-auto flex" css={w1024}>
-                <div className="mr-8">
+            <div
+                className="p-8 mx-auto flex"
+                css={css`
+                    ${w1024}
+                    @media (max-width: 1200px) {
+                        flex-direction: column;
+                        width: 100%;
+                    }
+                `}
+            >
+                <div
+                    className="mr-8"
+                    css={css`
+                        @media (max-width: 1200px) {
+                            margin: 0;
+                        }
+                    `}
+                >
                     <BlockContainer className="p-8 bg-white">
                         <Title>General Information</Title>
                         <ContentBlock label="gender" content={["Male"]} />
@@ -90,7 +107,14 @@ function About() {
                         <ContentBlock label="Emails" content={["mail@withinpixels.com", "mail@creapond.com"]} />
                     </BlockContainer>
                 </div>
-                <div className="w-80 shrink-0">
+                <div
+                    className="shrink-0"
+                    css={css`
+                        width: auto;
+                        margin-top: 32px;
+                        max-width: 960px;
+                    `}
+                >
                     <BlockContainer className="p-8">
                         <div className="flex justify-between mb-6 items-start">
                             <div className="text-xl font-medium">Friends</div>

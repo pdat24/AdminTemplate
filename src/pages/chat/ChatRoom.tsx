@@ -1,5 +1,6 @@
 /**@jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
+import MessageOutlinedIcon from "@mui/icons-material/MessageOutlined";
 import createId from "~/components/generateID";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
@@ -8,9 +9,11 @@ import CustomBtn from "~/components/CustomButton";
 import SingleMsg from "~/components/ChatMessage";
 import AvatarState from "~/components/AvatarState";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import { Fab } from "@mui/material";
+import { Fab, Tooltip } from "@mui/material";
 import { resetFab } from "~/components/CSS";
 import SendingTime from "~/components/SendingTime";
+import { Box, Drawer } from "@mui/material";
+
 import {
     useEffect,
     useState,
@@ -24,7 +27,7 @@ import {
 } from "react";
 
 import { bunchChat, chat, friend } from "~/types";
-import NoSelectedChat from "~/components/NoSelectedChat";
+import ForumIcon from "@mui/icons-material/Forum";
 import ContactInfo from "./ContactInfo";
 const shadowInpDiv = css`
     box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 3px 0px,
@@ -143,7 +146,9 @@ function EntryMsg({ onSendMessage }: { onSendMessage: Dispatch<SetStateAction<fr
     );
 }
 
-function ChatRoom() {
+function ChatRoom({ onToggle }: { onToggle: () => void }) {
+    const [open, setOpen] = useState(false);
+    const toggleDrawer = () => setOpen(!open);
     const [data, setData] = useState<friend>();
     useEffect(() => {
         window.addEventListener("chat/openChatRoom", (e: CustomEventInit<friend>) => {
@@ -157,12 +162,30 @@ function ChatRoom() {
                     <div className="relative flex flex-col h-full w-full overflow-hidden pb-8 shrink">
                         <div className="h-16 w-full bg-milk border border-solid flex items-center shrink-0">
                             <div className="flex items-center justify-between px-4 w-full">
-                                <div
-                                    onClick={() => window.dispatchEvent(new CustomEvent("chatroom/openrightside"))}
-                                    className="cursor-pointer flex items-center ml-2"
-                                >
-                                    <AvatarState state={data.state} alt="photo" src={data?.avatar} />
-                                    <div className="ml-4 text-black font-medium">{data?.name}</div>
+                                <div className="flex items-center">
+                                    <div onClick={onToggle}>
+                                        <Tooltip title="Select a chat" placement="bottom">
+                                            <Fab
+                                                css={css`
+                                                    ${resetFab}
+                                                    width: 40px;
+                                                    height: 40px;
+                                                `}
+                                            >
+                                                <MessageOutlinedIcon className="font-s20" />
+                                            </Fab>
+                                        </Tooltip>
+                                    </div>
+                                    <div
+                                        onClick={() => {
+                                            window.dispatchEvent(new CustomEvent("chatroom/openrightside"));
+                                            toggleDrawer();
+                                        }}
+                                        className="cursor-pointer flex items-center ml-2"
+                                    >
+                                        <AvatarState state={data.state} alt="photo" src={data?.avatar} />
+                                        <div className="ml-4 text-black font-medium">{data?.name}</div>
+                                    </div>
                                 </div>
                                 <Fab css={morvertBtn}>
                                     <MoreVertOutlinedIcon />
@@ -172,10 +195,53 @@ function ChatRoom() {
                         <Messages data={data.chat} />
                         <EntryMsg onSendMessage={setData} />
                     </div>
-                    <ContactInfo data={data} />
+                    <div
+                        css={css`
+                            @media (max-width: 1200px) {
+                                display: none;
+                            }
+                        `}
+                    >
+                        <ContactInfo data={data} />
+                    </div>
+                    <Drawer anchor="right" open={open} onClose={toggleDrawer}>
+                        <Box
+                            sx={{
+                                backgroundColor: "#f1f5f9",
+                                overflowX: "hidden",
+                                minHeight: "100vh",
+                            }}
+                            role="presentation"
+                        >
+                            <ContactInfo onToggle={toggleDrawer} data={data} />
+                        </Box>
+                    </Drawer>
                 </div>
             ) : (
-                <NoSelectedChat text="Select a conversation or start a new chat." />
+                <div className="grow p-6 h-full">
+                    <div className="h-full flex flex-col items-center justify-center">
+                        <ForumIcon style={{ fontSize: "100px" }} className="opacity-50" />
+                        <div className="opacity-60 px-4 text-lg mt-6 text-center font-medium">
+                            <div className="flex items-center gap-2 flex-col">
+                                <span>Select a conversation or start a new chat.</span>
+                                <div onClick={onToggle}>
+                                    <CustomBtn
+                                        className="bg-darkPurple"
+                                        css={css`
+                                            color: #fff;
+                                            display: none;
+                                            @media (max-width: 1200px) {
+                                                display: block;
+                                            }
+                                        `}
+                                    >
+                                        Select a chat
+                                    </CustomBtn>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );

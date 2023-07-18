@@ -21,7 +21,11 @@ import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDown
 import ReplyOutlinedIcon from "@mui/icons-material/ReplyOutlined";
 
 const wrapperCSS = css`
-    width: 1024px;
+    width: 100%;
+    max-width: 1024px;
+    @media (max-width: 1200px) {
+        width: 100%;
+    }
 `;
 const seeAll = css`
     padding: 4px 12px;
@@ -53,7 +57,16 @@ const footerBg = css`
 
 function LeftSide() {
     return (
-        <BlockContainer className="w-80 bg-white mr-8 shrink-0 h-fit">
+        <BlockContainer
+            className="w-80 bg-white mr-8 shrink-0 h-fit"
+            css={css`
+                @media (max-width: 1200px) {
+                    margin: 0;
+                    width: 100%;
+                    margin-bottom: 32px;
+                }
+            `}
+        >
             <div className="py-6 px-8">
                 <div className="overflow-hidden">
                     <div className="flex pb-4 justify-between items-center">
@@ -296,7 +309,14 @@ function RightSide() {
 export default function Timeline() {
     return (
         <div css={wrapperCSS} className="p-8 mx-auto">
-            <div className="flex">
+            <div
+                className="flex"
+                css={css`
+                    @media (max-width: 1200px) {
+                        flex-direction: column;
+                    }
+                `}
+            >
                 <LeftSide />
                 <RightSide />
             </div>

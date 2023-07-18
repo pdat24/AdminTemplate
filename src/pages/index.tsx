@@ -9,3 +9,4 @@ export { default as Contacts } from "./contacts";
 export { default as Chat } from "./chat";
 export { default as Mail } from "./mail";
 export { default as Notes } from "./notes";
+export { default as Login } from "./login";

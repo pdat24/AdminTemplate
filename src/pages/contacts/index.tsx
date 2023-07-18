@@ -7,7 +7,7 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { SvgIconTypeMap } from "@mui/material/SvgIcon";
 import { ChangeEvent, useEffect, useMemo, useRef, useState, useLayoutEffect } from "react";
 import cover from "~/assets/imgs/profile/36-640x480.jpg";
-import { Chip } from "@mui/material";
+import { Chip, Box, Drawer } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import Avatar from "@mui/material/Avatar";
@@ -36,8 +36,9 @@ const addBtnCSS = css`
     }
 `;
 const infoCSS = css`
-    width: 0;
-    transition: width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+    margin-right: -640px;
+    width: 640px;
+    transition: margin 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
 `;
 const avtCSS = css`
     width: 128px;
@@ -79,15 +80,16 @@ function User({ name, onClick }: { name: string; onClick: () => void }) {
     );
 }
 
-function UserInfoBlock() {
+function UserInfoBlock({ onToggle }) {
     const wrapper = useRef<HTMLDivElement>(null);
     const name = useRef<HTMLDivElement>(null);
     const handleClose = () => {
-        if (wrapper.current) wrapper.current.style.width = "0";
+        if (window.innerWidth <= 1200) onToggle();
+        else if (wrapper.current) wrapper.current.style.marginRight = "-640px";
     };
     useEffect(() => {
         window.addEventListener("openinforblock", (e: CustomEventInit<{ username: string }>) => {
-            name.current!.innerText = e.detail!.username;
+            if (name.current) name.current.innerText = e.detail!.username;
         });
     }, []);
     return (
@@ -151,12 +153,14 @@ function Contacts() {
     const groups = useRef<object>({});
     const groupLetters = useRef<string>("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
     const [searchText, setSearchText] = useState("");
+    const [open, setOpen] = useState(false);
+    const toggleDrawer = () => setOpen(!open);
     useMemo(() => {
         amount.current = 0;
         for (const i of groupLetters.current) groups.current[i] = [];
     }, [searchText]);
     const handleShowInfoBlock = (name: string) => {
-        document.getElementById("inforBlock")!.style.width = "640px";
+        document.getElementById("inforBlock")!.style.marginRight = "0";
         window.dispatchEvent(new CustomEvent("openinforblock", { detail: { username: name } }));
     };
     useLayoutEffect(() => {
@@ -165,7 +169,16 @@ function Contacts() {
             if (name_.includes(searchText.toLowerCase())) {
                 amount.current++;
                 groups.current[name_.charAt(0).toUpperCase()].push(
-                    <User key={index} name={name_} onClick={() => handleShowInfoBlock(name)} />
+                    <User
+                        key={index}
+                        name={name_}
+                        onClick={() => {
+                            if (window.innerWidth <= 1200) {
+                                toggleDrawer();
+                                window.dispatchEvent(new CustomEvent("openinforblock", { detail: { username: name } }));
+                            } else handleShowInfoBlock(name);
+                        }}
+                    />
                 );
             }
         });
@@ -216,7 +229,28 @@ function Contacts() {
                     <div>{renderByGroup()}</div>
                 </div>
             </div>
-            <UserInfoBlock />
+            <div
+                css={css`
+                    @media (max-width: 1200px) {
+                        display: none;
+                    }
+                `}
+            >
+                <UserInfoBlock />
+            </div>
+            <Drawer anchor="right" open={open} onClose={toggleDrawer}>
+                <Box
+                    sx={{
+                        width: 640,
+                        backgroundColor: "#f1f5f9",
+                        overflowX: "hidden",
+                        minHeight: "100vh",
+                    }}
+                    role="presentation"
+                >
+                    <UserInfoBlock onToggle={toggleDrawer} />
+                </Box>
+            </Drawer>
         </div>
     );
 }

@@ -35,14 +35,17 @@ const w400 = css`
     transition: margin 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 `;
 
-function ContactInfo({ data }: { data: friend }) {
+function ContactInfo({ data, onToggle }: { data: friend; onToggle?: () => void }) {
     const wrapper = useRef<HTMLDivElement>(null);
     const handleClose = () => {
-        wrapper.current!.style.marginRight = "-400px";
+        if (onToggle) onToggle();
+        else wrapper.current!.style.marginRight = "-400px";
     };
 
     useEffect(() => {
-        window.addEventListener("chatroom/openrightside", () => (wrapper.current!.style.marginRight = "0px"));
+        window.addEventListener("chatroom/openrightside", () => {
+            if (wrapper.current) wrapper.current.style.marginRight = "0px";
+        });
     }, []);
     return (
         <div ref={wrapper} className="bg-white shrink-0 overflow-hidden" css={w400}>

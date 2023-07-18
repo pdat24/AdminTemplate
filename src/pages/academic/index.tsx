@@ -196,8 +196,22 @@ function Body() {
     }, [hiddenCompleted, searchBarText, category]);
     return (
         <div>
-            <div className="flex justify-between">
-                <div className="flex gap-4">
+            <div
+                className="flex justify-between"
+                css={css`
+                    @media (max-width: 850px) {
+                        flex-direction: column;
+                    }
+                `}
+            >
+                <div
+                    className="flex gap-4"
+                    css={css`
+                        @media (max-width: 850px) {
+                            flex-direction: column;
+                        }
+                    `}
+                >
                     <FormControl fullWidth css={filterSelectorCSS}>
                         <InputLabel id="demo-simple-select-label">Category</InputLabel>
                         <Select value={String(category)} onChange={handleChangeType}>

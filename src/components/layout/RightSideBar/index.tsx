@@ -41,6 +41,7 @@ const closeBtn = css`
 
 function RightSideBar() {
     const wrapperDOM = useRef<HTMLDivElement>(null);
+    const main = useRef<HTMLDivElement>(null);
     const bodyRightDOM = useRef<HTMLDivElement>(null)!;
     const [friend, setFriend] = useState<friend | null>();
     useEffect(() => {
@@ -53,6 +54,12 @@ function RightSideBar() {
         document.body.addEventListener("click", (e: Event) => {
             if (!e.defaultPrevented) handleClose();
         });
+        const handler = () => {
+            if (window.innerWidth <= 1200) main.current!.style.display = "none";
+            else main.current!.style.display = "block";
+        };
+        window.addEventListener("resize", handler);
+        window.addEventListener("load", handler);
         window.addEventListener("startchat", (e: CustomEventInit<friend>) => {
             e.detail && handleOpen();
             setFriend(e.detail);
@@ -72,7 +79,14 @@ function RightSideBar() {
         }
     };
     return (
-        <>
+        <div
+            ref={main}
+            className="shrink-0"
+            style={{
+                width: "70px",
+                height: "100vh",
+            }}
+        >
             <div css={wrapperCSS} ref={wrapperDOM}>
                 {/** header */}
                 <header css={headerCSS} className="flex items-center justify-between">
@@ -98,14 +112,7 @@ function RightSideBar() {
                     <Conversation ref={bodyRightDOM} friend={friend!} />
                 </div>
             </div>
-            <div
-                className="shrink-0"
-                style={{
-                    width: "70px",
-                    height: "100vh",
-                }}
-            ></div>
-        </>
+        </div>
     );
 }
 

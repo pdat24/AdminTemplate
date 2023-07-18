@@ -1,11 +1,11 @@
 /**@jsxImportSource @emotion/react */
-import { css, CSSObject } from "@emotion/react";
+import { css, CSSObject, SerializedStyles } from "@emotion/react";
 import { Fab } from "@mui/material";
 import { resetFab } from "./CSS";
 import { children } from "~/types";
 
 interface props extends children {
-    css_?: CSSObject;
+    css_?: CSSObject | SerializedStyles;
     className?: string;
     style?: object;
 }

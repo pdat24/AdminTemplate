@@ -138,11 +138,17 @@ function Block1() {
         { label: "Current Statement", desc: "Must be paid before March 6, 2022", state: 0 },
     ];
     return (
-        <div className="flex gap-6">
+        <div className="flex gap-6 flex-wrap">
             {data.map((elem, index) => (
                 <BlockContainer
                     key={index}
                     className="py-6 pl-6 pr-3 mt-1 relative grow basis-0 shrink bg-white overflow-hidden"
+                    css={css`
+                        @media (max-width: 600px) {
+                            width: 100%;
+                            flex-basis: auto;
+                        }
+                    `}
                 >
                     <div className="flex justify-between items-center">
                         <div>
@@ -157,7 +163,7 @@ function Block1() {
                             </Fab>
                         </div>
                     </div>
-                    <div className="flex justify-start mt-6 zIndex gap-12">
+                    <div className="flex justify-start mt-6 zIndex gap-12 flex-wrap">
                         <div>
                             <div className="text-xs text-slate-500 font-medium">Card Limit</div>
                             <div className="text-2xl font-medium mt-1">$34,500.00</div>
@@ -265,7 +271,16 @@ function RankDiv() {
 function Finance() {
     return (
         <div className="bg-color">
-            <div className="flex justify-between px-8 pt-8 mb-8">
+            <div
+                className="flex justify-between px-8 pt-8 mb-8"
+                css={css`
+                    @media (max-width: 650px) {
+                        flex-direction: column;
+                        gap: 16px;
+                        align-items: center;
+                    }
+                `}
+            >
                 <div>
                     <div className="font-medium text-2xl">Finance dashboard</div>
                     <div className="text-sm text-slate-500">Keep track of your financial status</div>

@@ -12,7 +12,8 @@ import Photos from "./Photos";
 import Timeline from "./Timeline";
 
 const w960 = css`
-    width: 960px;
+    width: 100%;
+    max-width: 960px;
 `;
 const avatarCSS = css`
     width: 128px;
@@ -67,15 +68,40 @@ function ProfilePage() {
     return (
         <div className="bg-color">
             <img src={cover} alt="cover" className="object-cover h-80 w-full" />
-            <div className="h-72 bg-white px-8">
-                <div className="mx-auto flex h-full" css={w960}>
+            <div
+                className="bg-white px-8"
+                css={css`
+                    min-height: 72px;
+                `}
+            >
+                <div
+                    className="mx-auto flex h-full"
+                    css={css`
+                        ${w960}
+                        @media (max-width: 1200px) {
+                            flex-direction: column;
+                            align-items: center;
+                            width: 100%;
+                            padding-bottom: 16px;
+                        }
+                    `}
+                >
                     <img
                         src={avatar}
                         alt="avatar"
                         className="border-4 border-solid border-white border-circular"
                         css={avatarCSS}
                     />
-                    <div className="flex justify-between w-full">
+                    <div
+                        className="flex justify-between w-full"
+                        css={css`
+                            @media (max-width: 1200px) {
+                                flex-direction: column;
+                                align-items: center;
+                                gap: 16px;
+                            }
+                        `}
+                    >
                         <div className="flex items-center">
                             <div className="ml-6">
                                 <div className="font-bold">Pham Quoc Dat</div>

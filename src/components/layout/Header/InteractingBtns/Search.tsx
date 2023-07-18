@@ -33,7 +33,18 @@ function ListItem({ path, children, onClick }: { path: string; onClick: (v: bool
 function Search() {
     const [text, setText] = useState("");
     const [showEntry, setShowEntry] = useState(false);
-    const features = useRef(["Contacts", "Mail", "Finance", "Analytics", "Profile", "Academic", "Crypto", "Calendar"]);
+    const features = useRef([
+        "Contacts",
+        "Mail",
+        "Finance",
+        "Analytics",
+        "Profile",
+        "Academic",
+        "Crypto",
+        "Chat",
+        "Notes",
+        "Project",
+    ]);
     const fit = useRef<string[]>([]);
     const time = useRef(0);
     const handleClose = () => {

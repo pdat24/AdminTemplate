@@ -76,8 +76,8 @@ function Block1() {
 
 function Block2() {
     const wrapperCSS = css`
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        display: flex;
+        flex-wrap: wrap;
         gap: 32px;
     `;
     const data = [
@@ -88,7 +88,18 @@ function Block2() {
     return (
         <div css={wrapperCSS} className="mt-8">
             {data.map((elem, index) => (
-                <BlockContainer className="bg-white" key={index}>
+                <BlockContainer
+                    className="bg-white"
+                    key={index}
+                    css={css`
+                        @media (max-width: 1500px) {
+                            width: 100%;
+                        }
+                        @media (min-width: 1201px) {
+                            flex: 1;
+                        }
+                    `}
+                >
                     <div className="px-6 pt-6">
                         <div className="flex items-center justify-between">
                             <div className="font-medium">{elem.label}</div>
@@ -105,7 +116,7 @@ function Block2() {
                             </div>
                         </div>
                     </div>
-                    <img src={elem.chart} alt="photo" className="no-drag" />
+                    <img src={elem.chart} alt="photo" className="no-drag w-full" />
                 </BlockContainer>
             ))}
         </div>

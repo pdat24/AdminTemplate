@@ -11,6 +11,7 @@ import TrendingDownIcon from "@mui/icons-material/TrendingDown";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import EuroOutlinedIcon from "@mui/icons-material/EuroOutlined";
 import colors from "~/components/colors";
+import projectChart3 from "~/assets/imgs/profile/projectChart3.svg";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -122,8 +123,25 @@ function AnalyticBlock() {
         flex-grow: 2;
     `;
     return (
-        <div className="flex gap-6">
-            <BlockContainer css={grow2} className="shrink basis-0 bg-white"></BlockContainer>
+        <div
+            className="flex gap-6"
+            css={css`
+                @media (max-width: 1200px) {
+                    flex-direction: column;
+                }
+            `}
+        >
+            <BlockContainer
+                className="shrink basis-0 bg-white flex items-center justify-center"
+                css={css`
+                    ${grow2}
+                    @media (max-width: 1200px) {
+                        flex: 1;
+                    }
+                `}
+            >
+                <img src={projectChart3} alt="chart" className="no-drag" />
+            </BlockContainer>
             <div className="grow shrink basis-0 font-medium flex flex-col gap-6">
                 {data.map((elem, index) => (
                     <BlockContainer className="p-6 bg-white" key={index}>
